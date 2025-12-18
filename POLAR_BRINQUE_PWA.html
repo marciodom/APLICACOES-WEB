@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polar_Brinque - Controle de Brinquedos</title>
+    <!-- Favicon adicionado com o link fornecido -->
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/6v4V32H/polar-brinque-favicon.png">
+    <link rel="shortcut icon" href="https://i.ibb.co/6v4V32H/polar-brinque-favicon.png" type="image/x-icon">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/6v4V32H/polar-brinque-favicon.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #ffcc00;
+            --secondary-color: #ff6600;
+            --accent-color: #0099ff;
+            --success-color: #4CAF50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --pastel-red: #ff9999;
+            --light-color: #f5f5f5;
+            --dark-color: #333333;
+            --card-color: #ffffff;
+            --shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f8ff;
+            color: var(--dark-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(rgba(255, 204, 0, 0.9), rgba(255, 204, 0, 0.9)), 
+                        url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTIwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMEgxMjAwVjQwMEgwVjBaIiBmaWxsPSJ1cmwoI3BhcmspLz48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9InBhcmsiIGN4PSIwJSIgY3k9IjUwJSIgcj0iODAlIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZjYzAwIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZmZlYjQwIi8+PC9yYWRpYWxHcmFkaWVudD48L2RlZnM+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiMzMzMiPlBvbGFyX0JyaW5xdWU8L3RleHQ+PGNpcmNsZSBjeD0iMjAwIiBjeT0iMTUwIiByPSIzMCIgZmlsbD0iI2ZmNjYwMCIvPjxjaXJjbGUgY3g9IjMwMCIgY3k9IjE1MCIgcj0iMzAiIGZpbGw9IiMwMDk5ZmYiLz48cmVjdCB4PSIyMzAiIHk9IjEyMCIgd2lkdGg9IjE0MCIgaGVpZ2h0PSI2MCIgcng9IjEwIiBmaWxsPSIjNGNhZjUwIi8+PHJlY3QgeD0iNjAwIiB5PSIxMjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iODAiIHJ4PSIxNSIgZmlsbD0iI2ZmNjYwMCIvPjxjaXJjbGUgY3g9IjcwMCIgY3k9IjIwMCIgcj0iNDAiIGZpbGw9IiMwMDk5ZmYiLz48cGF0aCBkPSJNOTAwIDE1MEwxMDAwIDE1MEwxMDAwIDI1MEw5MDAgMjUwWiIgZmlsbD0iI2ZmNjYwMCIvPjxjaXJjbGUgY3g9IjgwMCIgY3k9IjIwMCIgcj0iMzAiIGZpbGw9IiM0Y2FmNTAiLz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+            padding: 12px 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            flex-direction: column;
+        }
+        
+        .header h1 {
+            color: var(--dark-color);
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-weight: 800;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            flex-grow: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .clock-container {
+            background-color: var(--primary-color);
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .clock-title {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+        
+        #clock {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 700px;
+        }
+        
+        .btn {
+            padding: 10px 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: var(--shadow);
+            white-space: nowrap;
+            min-height: 40px;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0077cc;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #3d8b40;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #e68900;
+            transform: translateY(-2px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-modal:hover {
+            color: var(--danger-color);
+        }
+        
+        .modal-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--dark-color);
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+        
+        .option-btn {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-btn:hover {
+            background-color: #f0f8ff;
+            border-color: var(--accent-color);
+        }
+        
+        .option-btn.selected {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        
+        .active-cards {
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--dark-color);
+            text-align: center;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .card {
+            background-color: var(--card-color);
+            border-radius: 10px;
+            padding: 15px;
+            width: 100%;
+            max-width: 320px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .card.completed {
+            border-left: 5px solid var(--success-color);
+        }
+        
+        .card.cancelled {
+            border-left: 5px solid var(--danger-color);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .child-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .toy-icon {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+        
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .toy-name, .time-remaining {
+            font-size: 1rem;
+            color: var(--dark-color);
+        }
+        
+        .time-remaining {
+            font-weight: 600;
+        }
+        
+        .progress-container {
+            height: 15px;
+            background-color: #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 100%;
+            transition: width 1s linear;
+        }
+        
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        .history {
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .history-list {
+            background-color: white;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: var(--shadow);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-item.cancelled {
+            background-color: #ffeaea;
+            color: var(--danger-color);
+            border-radius: 5px;
+            margin-bottom: 6px;
+        }
+        
+        .history-item.completed {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            border-radius: 5px;
+            margin-bottom: 6px;
+        }
+        
+        .history-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex: 1;
+        }
+        
+        .history-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .history-details {
+            display: flex;
+            gap: 8px;
+            color: #666;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
+        
+        .history-price {
+            font-weight: 700;
+            color: var(--success-color);
+            font-size: 1rem;
+            min-width: 70px;
+            text-align: right;
+        }
+        
+        .history-price.cancelled {
+            color: var(--danger-color);
+        }
+        
+        .action-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .btn-history {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-history:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: var(--danger-color);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-icon {
+            font-size: 1.2rem;
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            margin-top: 25px;
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .copyright {
+            font-size: 0.85rem;
+            color: #ddd;
+        }
+        
+        @keyframes blink {
+            0% { background-color: white; }
+            50% { background-color: var(--pastel-red); }
+            100% { background-color: white; }
+        }
+        
+        .blinking {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulsing {
+            animation: pulse 0.5s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 10px 12px;
+                min-height: 80px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .clock-container {
+                max-width: 280px;
+                padding: 10px;
+            }
+            
+            #clock {
+                font-size: 1.6rem;
+            }
+            
+            .control-panel {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 500px;
+                gap: 6px;
+            }
+            
+            .action-panel {
+                grid-template-columns: 1fr;
+                max-width: 300px;
+            }
+            
+            .btn {
+                padding: 8px 6px;
+                font-size: 0.8rem;
+                min-height: 35px;
+            }
+            
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Polar_Brinque</h1>
+        <p>Aluguel de brinquedos - Diversão garantida!</p>
+    </header>
+    
+    <main class="container">
+        <div class="clock-container">
+            <div class="clock-title">HORA ATUAL</div>
+            <div id="clock">--:--:--</div>
+        </div>
+        
+        <div class="control-panel">
+            <button class="btn btn-primary" id="nameBtn">
+                <i class="fas fa-user"></i> Nome
+            </button>
+            <button class="btn btn-primary" id="toyBtn">
+                <i class="fas fa-gamepad"></i> Brinquedo
+            </button>
+            <button class="btn btn-primary" id="timeBtn">
+                <i class="fas fa-clock"></i> Tempo
+            </button>
+            <button class="btn btn-success" id="startBtn">
+                <i class="fas fa-play"></i> Iniciar
+            </button>
+        </div>
+        
+        <div class="action-panel">
+            <button class="btn btn-history" id="reportBtn">
+                <i class="fas fa-file-image"></i> Relatório
+            </button>
+            <button class="btn btn-danger" id="resetBtn">
+                <i class="fas fa-trash-alt"></i> Limpar
+            </button>
+        </div>
+        
+        <section class="active-cards">
+            <h2 class="section-title">Atividades em Andamento</h2>
+            <div class="cards-container" id="activeCardsContainer">
+            </div>
+        </section>
+        
+        <section class="history">
+            <h2 class="section-title">Histórico de Atividades</h2>
+            <div class="history-list" id="historyList">
+            </div>
+        </section>
+    </main>
+    
+    <div class="notification" id="notification">
+        <div class="notification-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="notification-text">
+            Tempo esgotado! Clique para parar o alarme.
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="copyright">
+                <i class="far fa-copyright"></i> Polar_Brinque - Todos os direitos reservados
+            </div>
+        </div>
+    </footer>
+    
+    <div class="modal" id="nameModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeNameModal">&times;</span>
+            <h2 class="modal-title">Nome da Criança</h2>
+            <div class="form-group">
+                <label for="firstName">Nome:</label>
+                <input type="text" id="firstName" class="form-control" placeholder="Digite o nome">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Sobrenome:</label>
+                <input type="text" id="lastName" class="form-control" placeholder="Digite o sobrenome">
+            </div>
+            <button class="btn btn-primary" id="saveNameBtn" style="width: 100%;">Salvar</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="toyModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeToyModal">&times;</span>
+            <h2 class="modal-title">Escolha um Brinquedo</h2>
+            <div class="options-container">
+                <button class="option-btn" data-toy="Carrinho">Carrinho</button>
+                <button class="option-btn" data-toy="Motinha">Motinha</button>
+                <button class="option-btn" data-toy="Pula-Pula">Pula-Pula</button>
+                <button class="option-btn" data-toy="Inflável">Inflável</button>
+                <button class="option-btn" data-toy="Cercadinho">Cercadinho</button>
+                <button class="option-btn" data-toy="Balançador">Balançador</button>
+            </div>
+            <button class="btn btn-primary" id="saveToyBtn" style="width: 100%; margin-top: 20px;">Confirmar</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="timeModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeTimeModal">&times;</span>
+            <h2 class="modal-title">Selecione o Tempo</h2>
+            <div class="options-container">
+                <button class="option-btn" data-time="5">5 minutos</button>
+                <button class="option-btn" data-time="10">10 minutos</button>
+                <button class="option-btn" data-time="15">15 minutos</button>
+                <button class="option-btn" data-time="20">20 minutos</button>
+                <button class="option-btn" data-time="30">30 minutos</button>
+                <button class="option-btn" data-time="60">60 minutos</button>
+            </div>
+            <button class="btn btn-primary" id="saveTimeBtn" style="width: 100%; margin-top: 20px;">Confirmar</button>
+        </div>
+    </div>
+    
+    <audio id="alarmSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/286/286-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let selectedName = "";
+        let selectedToy = "";
+        let selectedTime = 0;
+        let activeCards = [];
+        let history = [];
+        let alarmPlaying = false;
+        let alarmInterval;
+        let notificationTimeout;
+        
+        const clockElement = document.getElementById('clock');
+        const nameBtn = document.getElementById('nameBtn');
+        const toyBtn = document.getElementById('toyBtn');
+        const timeBtn = document.getElementById('timeBtn');
+        const startBtn = document.getElementById('startBtn');
+        const reportBtn = document.getElementById('reportBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const notification = document.getElementById('notification');
+        
+        const nameModal = document.getElementById('nameModal');
+        const toyModal = document.getElementById('toyModal');
+        const timeModal = document.getElementById('timeModal');
+        
+        const closeNameModal = document.getElementById('closeNameModal');
+        const closeToyModal = document.getElementById('closeToyModal');
+        const closeTimeModal = document.getElementById('closeTimeModal');
+        
+        const saveNameBtn = document.getElementById('saveNameBtn');
+        const saveToyBtn = document.getElementById('saveToyBtn');
+        const saveTimeBtn = document.getElementById('saveTimeBtn');
+        
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        
+        const activeCardsContainer = document.getElementById('activeCardsContainer');
+        const historyList = document.getElementById('historyList');
+        
+        const alarmSound = document.getElementById('alarmSound');
+        
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        function checkPendingAlarms() {
+            const now = Date.now();
+            let hasPendingAlarms = false;
+            
+            activeCards.forEach(card => {
+                if (card.status === 'active') {
+                    const elapsed = Math.floor((now - new Date(card.startTime).getTime()) / 1000);
+                    const remaining = card.time * 60 - elapsed;
+                    
+                    if (remaining <= 0) {
+                        card.remainingTime = 0;
+                        hasPendingAlarms = true;
+                    }
+                }
+            });
+            
+            if (hasPendingAlarms) {
+                showNotification("Há atividades com tempo expirado! Verifique as atividades em andamento.");
+            }
+        }
+        
+        function showNotification(message) {
+            const notificationText = notification.querySelector('.notification-text');
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            notification.onclick = () => {
+                notification.classList.remove('show');
+                if (alarmPlaying) {
+                    stopAlarm();
+                }
+            };
+            
+            if (notificationTimeout) clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(() => {
+                notification.classList.remove('show');
+            }, 10000);
+        }
+        
+        nameBtn.addEventListener('click', () => {
+            nameModal.style.display = 'flex';
+            firstNameInput.value = selectedName.split(' ')[0] || '';
+            lastNameInput.value = selectedName.split(' ').slice(1).join(' ') || '';
+        });
+        
+        toyBtn.addEventListener('click', () => {
+            toyModal.style.display = 'flex';
+            document.querySelectorAll('#toyModal .option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.dataset.toy === selectedToy) {
+                    btn.classList.add('selected');
+                }
+            });
+        });
+        
+        timeBtn.addEventListener('click', () => {
+            timeModal.style.display = 'flex';
+            document.querySelectorAll('#timeModal .option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if (parseInt(btn.dataset.time) === selectedTime) {
+                    btn.classList.add('selected');
+                }
+            });
+        });
+        
+        closeNameModal.addEventListener('click', () => {
+            nameModal.style.display = 'none';
+        });
+        
+        closeToyModal.addEventListener('click', () => {
+            toyModal.style.display = 'none';
+        });
+        
+        closeTimeModal.addEventListener('click', () => {
+            timeModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === nameModal) {
+                nameModal.style.display = 'none';
+            }
+            if (e.target === toyModal) {
+                toyModal.style.display = 'none';
+            }
+            if (e.target === timeModal) {
+                timeModal.style.display = 'none';
+            }
+        });
+        
+        document.querySelectorAll('#toyModal .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#toyModal .option-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+        });
+        
+        document.querySelectorAll('#timeModal .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#timeModal .option-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+        });
+        
+        saveNameBtn.addEventListener('click', () => {
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+            
+            if (firstName === '') {
+                alert('Por favor, digite o nome da criança');
+                return;
+            }
+            
+            selectedName = `${firstName} ${lastName}`.trim();
+            nameModal.style.display = 'none';
+            updateStartButtonState();
+        });
+        
+        saveToyBtn.addEventListener('click', () => {
+            const selected = document.querySelector('#toyModal .option-btn.selected');
+            if (!selected) {
+                alert('Por favor, selecione um brinquedo');
+                return;
+            }
+            
+            selectedToy = selected.dataset.toy;
+            toyModal.style.display = 'none';
+            updateStartButtonState();
+        });
+        
+        saveTimeBtn.addEventListener('click', () => {
+            const selected = document.querySelector('#timeModal .option-btn.selected');
+            if (!selected) {
+                alert('Por favor, selecione um tempo');
+                return;
+            }
+            
+            selectedTime = parseInt(selected.dataset.time);
+            timeModal.style.display = 'none';
+            updateStartButtonState();
+        });
+        
+        function updateStartButtonState() {
+            if (selectedName && selectedToy && selectedTime > 0) {
+                startBtn.disabled = false;
+                startBtn.style.opacity = '1';
+                startBtn.style.cursor = 'pointer';
+            } else {
+                startBtn.disabled = true;
+                startBtn.style.opacity = '0.6';
+                startBtn.style.cursor = 'not-allowed';
+            }
+        }
+        
+        startBtn.addEventListener('click', () => {
+            if (!selectedName || !selectedToy || selectedTime <= 0) {
+                alert('Por favor, preencha todos os campos antes de iniciar');
+                return;
+            }
+            
+            const cardId = Date.now();
+            const card = {
+                id: cardId,
+                name: selectedName,
+                toy: selectedToy,
+                time: selectedTime,
+                remainingTime: selectedTime * 60,
+                startTime: new Date(),
+                status: 'active'
+            };
+            
+            activeCards.push(card);
+            renderActiveCards();
+            saveToLocalStorage();
+            
+            selectedName = "";
+            selectedToy = "";
+            selectedTime = 0;
+            updateStartButtonState();
+        });
+        
+        function renderActiveCards() {
+            activeCardsContainer.innerHTML = '';
+            
+            activeCards.forEach(card => {
+                if (card.status !== 'active') return;
+                
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.id = `card-${card.id}`;
+                
+                const progressPercentage = (card.remainingTime / (card.time * 60)) * 100;
+                let progressColor = '';
+                
+                if (progressPercentage > 50) {
+                    progressColor = '#4CAF50';
+                } else if (progressPercentage > 25) {
+                    const orangeIntensity = Math.round((50 - progressPercentage) * 5.1);
+                    progressColor = `rgb(255, ${152 + orangeIntensity}, 0)`;
+                } else if (progressPercentage > (5/card.time)*100) {
+                    progressColor = '#FF5722';
+                } else if (progressPercentage > (3/card.time)*100) {
+                    progressColor = '#F44336';
+                } else {
+                    progressColor = '#F44336';
+                }
+                
+                let toyIcon = 'fa-gamepad';
+                switch(card.toy) {
+                    case 'Carrinho': toyIcon = 'fa-car'; break;
+                    case 'Motinha': toyIcon = 'fa-motorcycle'; break;
+                    case 'Pula-Pula': toyIcon = 'fa-child'; break;
+                    case 'Inflável': toyIcon = 'fa-cloud'; break;
+                    case 'Cercadinho': toyIcon = 'fa-border-all'; break;
+                    case 'Balançador': toyIcon = 'fa-balance-scale'; break;
+                }
+                
+                cardElement.innerHTML = `
+                    <div class="card-header">
+                        <div class="child-name">${card.name}</div>
+                        <div class="toy-icon"><i class="fas ${toyIcon}"></i></div>
+                    </div>
+                    <div class="card-info">
+                        <div class="toy-name">${card.toy}</div>
+                        <div class="time-remaining" id="time-${card.id}">${formatTime(card.remainingTime)}</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-${card.id}" 
+                             style="width: ${progressPercentage}%; background-color: ${progressColor};">
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-danger end-btn" data-id="${card.id}">
+                            <i class="fas fa-stop-circle"></i> Encerrar
+                        </button>
+                    </div>
+                `;
+                
+                activeCardsContainer.appendChild(cardElement);
+            });
+            
+            document.querySelectorAll('.end-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const cardId = parseInt(e.target.closest('.end-btn').dataset.id);
+                    endCard(cardId);
+                });
+            });
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function updateTimers() {
+            activeCards.forEach(card => {
+                if (card.status !== 'active') return;
+                
+                const now = new Date();
+                const startTime = new Date(card.startTime);
+                const elapsedSeconds = Math.floor((now - startTime) / 1000);
+                card.remainingTime = Math.max(0, card.time * 60 - elapsedSeconds);
+                
+                const timeElement = document.getElementById(`time-${card.id}`);
+                if (timeElement) {
+                    timeElement.textContent = formatTime(card.remainingTime);
+                }
+                
+                const progressPercentage = (card.remainingTime / (card.time * 60)) * 100;
+                const progressElement = document.getElementById(`progress-${card.id}`);
+                const cardElement = document.getElementById(`card-${card.id}`);
+                
+                if (progressElement && cardElement) {
+                    progressElement.style.width = `${progressPercentage}%`;
+                    
+                    if (card.remainingTime <= 0) {
+                        progressElement.style.backgroundColor = '#ff9999';
+                        cardElement.classList.remove('pulsing');
+                        cardElement.classList.add('blinking');
+                        
+                        if (!alarmPlaying) {
+                            playAlarm();
+                            showNotification(`Tempo de ${card.name} no ${card.toy} esgotou! Clique para parar o alarme.`);
+                        }
+                    } else if (progressPercentage > 50) {
+                        progressElement.style.backgroundColor = '#4CAF50';
+                        cardElement.classList.remove('blinking', 'pulsing');
+                    } else if (progressPercentage > 25) {
+                        const orangeIntensity = Math.round((50 - progressPercentage) * 5.1);
+                        progressElement.style.backgroundColor = `rgb(255, ${152 + orangeIntensity}, 0)`;
+                        cardElement.classList.remove('blinking', 'pulsing');
+                    } else if (progressPercentage > (5/card.time)*100) {
+                        progressElement.style.backgroundColor = '#FF5722';
+                        cardElement.classList.remove('blinking');
+                        cardElement.classList.add('pulsing');
+                    } else if (progressPercentage > (3/card.time)*100) {
+                        progressElement.style.backgroundColor = '#F44336';
+                        cardElement.classList.remove('blinking');
+                        cardElement.classList.add('pulsing');
+                    } else {
+                        progressElement.style.backgroundColor = '#F44336';
+                        cardElement.classList.remove('blinking', 'pulsing');
+                    }
+                }
+            });
+        }
+        
+        function playAlarm() {
+            alarmPlaying = true;
+            
+            alarmSound.currentTime = 0;
+            alarmSound.play().catch(e => console.log("Erro ao reproduzir alarme:", e));
+            
+            if (alarmInterval) clearInterval(alarmInterval);
+            alarmInterval = setInterval(() => {
+                if (alarmPlaying) {
+                    alarmSound.currentTime = 0;
+                    alarmSound.play().catch(e => console.log("Erro ao reproduzir alarme:", e));
+                }
+            }, 5000);
+        }
+        
+        function stopAlarm() {
+            alarmPlaying = false;
+            alarmSound.pause();
+            alarmSound.currentTime = 0;
+            if (alarmInterval) clearInterval(alarmInterval);
+            notification.classList.remove('show');
+        }
+        
+        // CORREÇÃO DO CÁLCULO DO VALOR - Início da alteração
+        function endCard(cardId) {
+            const cardIndex = activeCards.findIndex(c => c.id === cardId);
+            if (cardIndex === -1) return;
+            
+            const card = activeCards[cardIndex];
+            card.endTime = new Date();
+            
+            if (card.remainingTime > 0) {
+                card.status = 'cancelled';
+            } else {
+                card.status = 'completed';
+            }
+            
+            const cardElement = document.getElementById(`card-${cardId}`);
+            if (cardElement) {
+                cardElement.classList.remove('blinking', 'pulsing');
+            }
+            
+            if (alarmPlaying) {
+                stopAlarm();
+            }
+            
+            // CÁLCULO CORRIGIDO: 10min = R$7, 20min = R$14, 30min = R$21, etc.
+            const timeInMinutes = card.time;
+            const pricePer10Minutes = 7;
+            // Calcula quantos blocos completos de 10 minutos existem
+            const numberOf10MinuteBlocks = timeInMinutes / 10;
+            // Multiplica pelo valor de cada bloco (R$7)
+            const price = card.status === 'cancelled' ? 0 : (numberOf10MinuteBlocks * pricePer10Minutes);
+            
+            const historyItem = {
+                id: card.id,
+                name: card.name,
+                toy: card.toy,
+                time: card.time,
+                price: price,
+                status: card.status,
+                endTime: card.endTime
+            };
+            
+            history.unshift(historyItem);
+            activeCards.splice(cardIndex, 1);
+            
+            renderActiveCards();
+            renderHistory();
+            saveToLocalStorage();
+        }
+        // CORREÇÃO DO CÁLCULO DO VALOR - Fim da alteração
+        
+        function renderHistory() {
+            historyList.innerHTML = '';
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="history-item" style="text-align: center; color: #888;">Nenhuma atividade registrada</div>';
+                return;
+            }
+            
+            history.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = `history-item ${item.status}`;
+                
+                let toyIcon = 'fa-gamepad';
+                switch(item.toy) {
+                    case 'Carrinho': toyIcon = 'fa-car'; break;
+                    case 'Motinha': toyIcon = 'fa-motorcycle'; break;
+                    case 'Pula-Pula': toyIcon = 'fa-child'; break;
+                    case 'Inflável': toyIcon = 'fa-cloud'; break;
+                    case 'Cercadinho': toyIcon = 'fa-border-all'; break;
+                    case 'Balançador': toyIcon = 'fa-balance-scale'; break;
+                }
+                
+                itemElement.innerHTML = `
+                    <div class="history-info">
+                        <div class="history-name">
+                            ${item.name} 
+                            ${item.status === 'cancelled' ? '<span style="color: #f44336; font-size: 0.85rem;">(Desistência)</span>' : ''}
+                        </div>
+                        <div class="history-details">
+                            <span><i class="fas ${toyIcon}"></i> ${item.toy}</span>
+                            <span><i class="fas fa-clock"></i> ${item.time} min</span>
+                            <span>${item.endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                        </div>
+                    </div>
+                    <div class="history-price ${item.status === 'cancelled' ? 'cancelled' : ''}">
+                        ${item.status === 'cancelled' ? 'Cancelado' : `R$ ${item.price.toFixed(2)}`}
+                    </div>
+                `;
+                
+                historyList.appendChild(itemElement);
+            });
+        }
+        
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja limpar toda a memória? Isso apagará o histórico e todas as atividades em andamento.')) {
+                activeCards = [];
+                history = [];
+                localStorage.removeItem('locabrinqueData');
+                renderActiveCards();
+                renderHistory();
+                
+                if (alarmPlaying) {
+                    stopAlarm();
+                }
+                
+                alert('Memória limpa com sucesso!');
+            }
+        });
+        
+        reportBtn.addEventListener('click', () => {
+            if (history.length === 0) {
+                alert('Não há histórico para gerar relatório');
+                return;
+            }
+            
+            const reportDiv = document.createElement('div');
+            reportDiv.id = 'report-content';
+            reportDiv.style.cssText = `
+                background: white;
+                padding: 15px;
+                border-radius: 8px;
+                max-width: 800px;
+                margin: 0 auto;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+            `;
+            
+            const now = new Date();
+            const header = `
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <h1 style="color: #333; margin-bottom: 5px; font-size: 24px;">Polar_Brinque</h1>
+                    <h2 style="color: #666; margin-bottom: 8px; font-size: 18px;">Relatório de Atividades</h2>
+                    <p style="color: #888; font-size: 12px;">Gerado em: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}</p>
+                </div>
+            `;
+            
+            let tableRows = '';
+            let totalRevenue = 0;
+            let totalActivities = 0;
+            let cancelledActivities = 0;
+            
+            history.forEach((item, index) => {
+                const rowColor = item.status === 'cancelled' ? '#ffeaea' : (item.status === 'completed' ? '#e8f5e9' : (index % 2 === 0 ? '#f9f9f9' : 'white'));
+                const statusText = item.status === 'cancelled' ? 'DESISTÊNCIA' : 'CONCLUÍDA';
+                const statusColor = item.status === 'cancelled' ? '#f44336' : '#4CAF50';
+                
+                tableRows += `
+                    <tr style="background-color: ${rowColor};">
+                        <td style="padding: 6px; border-bottom: 1px solid #ddd; font-size: 12px;">${index + 1}</td>
+                        <td style="padding: 6px; border-bottom: 1px solid #ddd; font-size: 12px;">${item.name}</td>
+                        <td style="padding: 6px; border-bottom: 1px solid #ddd; font-size: 12px;">${item.toy}</td>
+                        <td style="padding: 6px; border-bottom: 1px solid #ddd; font-size: 12px;">${item.time} min</td>
+                        <td style="padding: 6px; border-bottom: 1px solid #ddd; color: ${statusColor}; font-weight: bold; font-size: 12px;">${statusText}</td>
+                        <td style="padding: 6px; border-bottom: 1px solid #ddd; text-align: right; font-size: 12px;">R$ ${item.price.toFixed(2)}</td>
+                    </tr>
+                `;
+                
+                if (item.status !== 'cancelled') {
+                    totalRevenue += item.price;
+                } else {
+                    cancelledActivities++;
+                }
+                totalActivities++;
+            });
+            
+            const table = `
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 12px;">
+                    <thead>
+                        <tr style="background-color: #0099ff; color: white;">
+                            <th style="padding: 8px; text-align: left; font-size: 12px;">#</th>
+                            <th style="padding: 8px; text-align: left; font-size: 12px;">Nome</th>
+                            <th style="padding: 8px; text-align: left; font-size: 12px;">Brinquedo</th>
+                            <th style="padding: 8px; text-align: left; font-size: 12px;">Tempo</th>
+                            <th style="padding: 8px; text-align: left; font-size: 12px;">Status</th>
+                            <th style="padding: 8px; text-align: right; font-size: 12px;">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            `;
+            
+            const summary = `
+                <div style="background-color: #f0f8ff; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 12px;">
+                    <h3 style="color: #333; margin-bottom: 8px; font-size: 14px;">Resumo</h3>
+                    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                        <div style="margin-bottom: 4px;"><strong>Total de atividades:</strong> ${totalActivities}</div>
+                        <div style="margin-bottom: 4px;"><strong>Concluídas:</strong> ${totalActivities - cancelledActivities}</div>
+                        <div style="margin-bottom: 4px;"><strong>Desistências:</strong> ${cancelledActivities}</div>
+                        <div style="margin-bottom: 4px;"><strong>Receita total:</strong> R$ ${totalRevenue.toFixed(2)}</div>
+                    </div>
+                </div>
+            `;
+            
+            const footer = `
+                <div style="text-align: center; color: #888; font-size: 10px; margin-top: 15px; padding-top: 8px; border-top: 1px solid #eee;">
+                    <p>© ${now.getFullYear()} Polar_Brinque - Todos os direitos reservados</p>
+                    <p>Relatório gerado automaticamente pelo sistema</p>
+                </div>
+            `;
+            
+            reportDiv.innerHTML = header + table + summary + footer;
+            
+            document.body.appendChild(reportDiv);
+            
+            html2canvas(reportDiv, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                logging: false
+            }).then(canvas => {
+                document.body.removeChild(reportDiv);
+                
+                const image = canvas.toDataURL('image/jpeg', 1.0);
+                const link = document.createElement('a');
+                link.download = `relatorio_polar_brinque_${now.toISOString().slice(0,10)}_${now.getHours()}${now.getMinutes()}.jpg`;
+                link.href = image;
+                link.click();
+                
+                alert('Relatório gerado e baixado com sucesso!');
+            }).catch(error => {
+                console.error('Erro ao gerar relatório:', error);
+                document.body.removeChild(reportDiv);
+                alert('Erro ao gerar relatório. Tente novamente.');
+            });
+        });
+        
+        function saveToLocalStorage() {
+            const data = {
+                activeCards: activeCards.map(card => ({
+                    ...card,
+                    startTime: card.startTime.toISOString()
+                })),
+                history: history.map(item => ({
+                    ...item,
+                    endTime: item.endTime.toISOString()
+                })),
+                lastUpdated: new Date().toISOString()
+            };
+            localStorage.setItem('locabrinqueData', JSON.stringify(data));
+        }
+        
+        function loadFromLocalStorage() {
+            const dataStr = localStorage.getItem('locabrinqueData');
+            if (!dataStr) return;
+            
+            try {
+                const data = JSON.parse(dataStr);
+                
+                if (data.activeCards && Array.isArray(data.activeCards)) {
+                    activeCards = data.activeCards.map(card => {
+                        card.startTime = new Date(card.startTime);
+                        const elapsedSeconds = Math.floor((new Date() - card.startTime) / 1000);
+                        card.remainingTime = Math.max(0, card.time * 60 - elapsedSeconds);
+                        return card;
+                    });
+                }
+                
+                if (data.history && Array.isArray(data.history)) {
+                    history = data.history.map(item => {
+                        item.endTime = new Date(item.endTime);
+                        return item;
+                    });
+                }
+                
+                renderActiveCards();
+                renderHistory();
+                checkPendingAlarms();
+            } catch (e) {
+                console.error('Erro ao carregar dados do localStorage:', e);
+            }
+        }
+        
+        function initApp() {
+            updateStartButtonState();
+            loadFromLocalStorage();
+            
+            setInterval(updateTimers, 1000);
+            
+            notification.addEventListener('click', () => {
+                if (alarmPlaying) {
+                    stopAlarm();
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+        window.addEventListener('beforeunload', () => {
+            saveToLocalStorage();
+        });
+    </script>
+</body>
+</html>
