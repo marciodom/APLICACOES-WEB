@@ -1,0 +1,32 @@
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Termux / Linux
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# Node / PWA (caso use futuramente)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build / cache
+dist/
+build/
+.cache/
+
+# Editor
+.vscode/
+.idea/
+
+# Arquivos sensíveis
+.env
+.env.local
+
+# Backup
+*.bak
