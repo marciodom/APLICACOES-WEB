@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polar_Brinque </title>
+    <title>Polar_Brinque</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/nxt529Q/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -23,100 +23,425 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background-color: var(--bg-light); color: #333; min-height: 100vh; display: flex; flex-direction: column; }
+        body { 
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+            color: #333; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
 
         .header { 
-            background: var(--polar-yellow); 
-            padding: 10px 20px; 
+            background: linear-gradient(90deg, var(--polar-yellow) 0%, #ffd633 100%);
+            padding: 12px 20px; 
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .header h1 { 
             font-size: 2rem; 
             font-weight: 800; 
             flex-grow: 1; 
             text-align: center;
-            margin-left: 50px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            color: #222;
+            margin-left: 40px;
         }
         .header-logo {
             width: 50px;
             height: 50px;
             object-fit: contain;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
+        }
+        
+        .btn-config {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        .btn-config:hover {
+            background: rgba(0,0,0,0.1);
         }
 
         .container { padding: 15px; max-width: 500px; margin: 0 auto; width: 100%; flex: 1; }
 
-        .clock-card { background-color: #ff9999; border-radius: 12px; padding: 8px; margin: 5px auto 15px; text-align: center; width: 90%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        #clock { font-size: 1.8rem; font-weight: 800; letter-spacing: 3px; color: #222; }
+        .clock-card { 
+            background: linear-gradient(135deg, #ff9999 0%, #ff6666 100%);
+            border-radius: 12px; 
+            padding: 8px; 
+            margin: 5px auto 15px; 
+            text-align: center; 
+            width: 90%; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: 3px solid #ff3333;
+        }
+        #clock { 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            letter-spacing: 3px; 
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
 
         .control-panel { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
-        .btn-cmd { padding: 12px; border: none; border-radius: 8px; color: white; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; }
-        .btn-blue { background: var(--polar-blue); }
-        .btn-ready { background: var(--polar-green-strong) !important; transform: scale(1.02); box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); }
+        .btn-cmd { 
+            padding: 12px; 
+            border: none; 
+            border-radius: 8px; 
+            color: white; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .btn-cmd:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .btn-cmd:active {
+            transform: translateY(0);
+        }
+        .btn-blue { 
+            background: linear-gradient(135deg, var(--polar-blue) 0%, #0077cc 100%);
+        }
+        .btn-ready { 
+            background: linear-gradient(135deg, var(--polar-green-strong) 0%, #1e7e34 100%) !important;
+            transform: scale(1.02); 
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5) !important;
+            animation: pulse 2s infinite;
+        }
 
-        .btn-gray { background: #6c757d; width: 100%; margin-top: 10px; }
-        .btn-red { background: var(--polar-red); width: 100%; margin-top: 10px; }
+        @keyframes pulse {
+            0% { transform: scale(1.02); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1.02); }
+        }
 
-        .section-header { font-size: 1.6rem; font-weight: 700; text-align: center; margin: 25px 0 10px; }
-        .section-header::after { content: ''; display: block; width: 100%; height: 3px; background: var(--polar-yellow); }
+        .btn-gray { 
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            width: 100%; 
+            margin-top: 10px; 
+        }
+        .btn-red { 
+            background: linear-gradient(135deg, var(--polar-red) 0%, #d32f2f 100%);
+            width: 100%; 
+            margin-top: 10px; 
+        }
 
-        .active-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .section-header { 
+            font-size: 1.6rem; 
+            font-weight: 700; 
+            text-align: center; 
+            margin: 25px 0 10px; 
+        }
+        .section-header::after { 
+            content: ''; 
+            display: block; 
+            width: 100%; 
+            height: 3px; 
+            background: var(--polar-yellow); 
+        }
+
+        .active-card { 
+            background: white; 
+            border-radius: 12px; 
+            padding: 12px; 
+            margin-bottom: 10px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--polar-blue);
+            transition: transform 0.2s ease;
+        }
+        .active-card:hover {
+            transform: translateX(2px);
+        }
         .card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .child-name { font-size: 1.4rem; font-weight: 700; }
-        .toy-icon { font-size: 1.2rem; color: var(--polar-blue); }
-        .timer-text { font-size: 1.1rem; font-weight: 700; }
+        .child-name { font-size: 1.2rem; font-weight: 700; }
+        .toy-icon { font-size: 1.1rem; color: var(--polar-blue); }
+        .timer-text { font-size: 1rem; font-weight: 700; }
         
-        .progress-container { height: 12px; background: #eee; border-radius: 10px; overflow: hidden; margin: 12px 0; }
-        .progress-fill { height: 100%; width: 100%; transition: width 1s linear, background-color 0.5s ease; }
+        .progress-container { height: 10px; background: #e9ecef; border-radius: 8px; overflow: hidden; margin: 8px 0; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
+        .progress-fill { height: 100%; width: 100%; transition: width 1s linear, background-color 0.5s ease; border-radius: 8px; }
         
-        .bg-green { background-color: #4caf50 !important; }
-        .bg-orange { background-color: var(--polar-orange) !important; }
-        .bg-red { background-color: var(--polar-red) !important; }
+        .bg-green { background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%) !important; }
+        .bg-orange { background: linear-gradient(90deg, var(--polar-orange) 0%, #ffb74d 100%) !important; }
+        .bg-red { background: linear-gradient(90deg, var(--polar-red) 0%, #ef5350 100%) !important; }
 
-        .btn-group-stop { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
-        .btn-stop { color: white; border: none; padding: 8px 10px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 0.8rem; min-height: 38px; }
+        .btn-group-stop { 
+            display: flex; 
+            gap: 6px; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 8px;
+        }
+        .btn-stop { 
+            color: white; 
+            border: none; 
+            padding: 6px 8px; 
+            border-radius: 5px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+            font-size: 0.75rem; 
+            min-height: 30px;
+            flex: 1;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .btn-stop:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
         
-        .btn-editar { background: var(--polar-yellow); color: #333; }
-        .btn-encerrar { background: var(--polar-red); }
-        .btn-finish-off { background: var(--polar-green-off); cursor: not-allowed; opacity: 0.8; }
-        .btn-finish-on { background: var(--polar-green-strong); cursor: pointer; opacity: 1; }
+        .btn-editar { background: linear-gradient(135deg, var(--polar-yellow) 0%, #ffb300 100%); color: #333; }
+        .btn-encerrar { background: linear-gradient(135deg, var(--polar-red) 0%, #d32f2f 100%); }
+        .btn-finish-off { background: linear-gradient(135deg, var(--polar-green-off) 0%, #5cb85c 100%); cursor: not-allowed; opacity: 0.8; }
+        .btn-finish-on { 
+            background: linear-gradient(135deg, var(--polar-green-strong) 0%, #1e7e34 100%);
+            cursor: pointer; 
+            opacity: 1; 
+            animation: pulse 2s infinite;
+        }
 
-        .hist-item { padding: 12px 15px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .hist-item.success { background: var(--hist-bg-success); color: var(--hist-text-success); }
-        .hist-item.manual-end { background: var(--hist-bg-cancel); color: var(--hist-text-cancel); }
+        .hist-item { 
+            padding: 10px 12px; 
+            border-radius: 10px; 
+            margin-bottom: 8px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            transition: transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .hist-item:hover {
+            transform: translateX(3px);
+        }
+        .hist-item.success { 
+            background: linear-gradient(135deg, var(--hist-bg-success) 0%, #d4edda 100%);
+            border-left: 4px solid var(--hist-text-success);
+            color: var(--hist-text-success); 
+        }
+        .hist-item.manual-end { 
+            background: linear-gradient(135deg, var(--hist-bg-cancel) 0%, #f8d7da 100%);
+            border-left: 4px solid var(--hist-text-cancel);
+            color: var(--hist-text-cancel); 
+        }
         
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
-        .m-box { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 350px; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        .opt-btn { padding: 12px; border: 2px solid #ddd; border-radius: 6px; background: white; cursor: pointer; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.7); 
+            z-index: 1000; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .m-box { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            width: 100%; 
+            max-width: 350px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .options-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 8px; 
+            margin-top: 10px; 
+            margin-bottom: 15px;
+        }
+        .opt-btn { 
+            padding: 10px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 6px; 
+            background: white; 
+            cursor: pointer; 
+            font-weight: 600; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 5px; 
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        .opt-btn:hover {
+            border-color: var(--polar-blue);
+            background: #f0f8ff;
+        }
+        .opt-btn i {
+            font-size: 1.2rem;
+            color: var(--polar-blue);
+        }
+        
+        .config-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .config-section h4 {
+            margin-bottom: 10px;
+            color: var(--polar-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .config-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        
+        .config-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .config-option:last-child {
+            border-bottom: none;
+        }
+        
+        .config-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .config-value {
+            font-weight: bold;
+            color: var(--polar-blue);
+            font-size: 0.9rem;
+        }
 
-        .footer { background: #333; color: white; text-align: center; padding: 15px; font-size: 0.85rem; margin-top: 20px; border-top: 3px solid var(--polar-yellow); line-height: 1.4; }
+        .footer { 
+            background: linear-gradient(90deg, #222 0%, #333 100%);
+            color: white; 
+            text-align: center; 
+            padding: 15px; 
+            font-size: 0.85rem; 
+            margin-top: 20px; 
+            border-top: 3px solid var(--polar-yellow); 
+            line-height: 1.4; 
+        }
 
-        .blink-red { animation: blinker-red 1s linear infinite; }
-        @keyframes blinker-red { 50% { background-color: #ffcccc; } }
+        .blink-red { 
+            animation: blinker-red 1s linear infinite; 
+            border-left-color: var(--polar-red) !important;
+        }
+        @keyframes blinker-red { 
+            0%, 100% { background-color: white; }
+            50% { background-color: #ffebee; }
+        }
+        
+        .opt-btn.selected {
+            border-color: var(--polar-blue);
+            background: #f0f8ff;
+            color: var(--polar-blue);
+        }
+        
+        .config-save-btn {
+            background: linear-gradient(135deg, var(--polar-green-strong) 0%, #1e7e34 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .config-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+        
+        .emoji-icon {
+            font-size: 1.4rem;
+        }
     </style>
 </head>
 <body>
 
     <header class="header">
+        <button class="btn-config" onclick="abrirConfiguracoes()">
+            <i class="fas fa-cog"></i>
+        </button>
         <h1>Polar_Brinque</h1>
         <img src="https://i.ibb.co/nxt529Q/favicon.png" alt="Logo" class="header-logo">
     </header>
 
     <div class="container">
-        <div class="clock-card"><div id="clock">00:00:00</div></div>
+        <div class="clock-card">
+            <div id="clock">00:00:00</div>
+        </div>
 
         <div class="control-panel">
-            <button class="btn-cmd btn-blue" onclick="openM('nameM')"><i class="fas fa-user"></i> Nome</button>
-            <button class="btn-cmd btn-blue" onclick="openM('toyM')"><i class="fas fa-gamepad"></i> Brinquedo</button>
-            <button class="btn-cmd btn-blue" onclick="openM('timeM')"><i class="fas fa-clock"></i> Tempo</button>
-            <button class="btn-cmd btn-green" id="btnIniciar" style="background: #74c080" onclick="iniciar()"><i class="fas fa-play"></i> Iniciar</button>
+            <button class="btn-cmd btn-blue" onclick="abrirModal('nameM')">
+                <i class="fas fa-user"></i> Nome
+            </button>
+            <button class="btn-cmd btn-blue" onclick="abrirModal('toyM')">
+                <i class="fas fa-gamepad"></i> Brinquedo
+            </button>
+            <button class="btn-cmd btn-blue" onclick="abrirModal('timeM')">
+                <i class="fas fa-clock"></i> Tempo
+            </button>
+            <button class="btn-cmd" id="btnIniciar" style="background: #74c080" onclick="iniciarAtividade()">
+                <i class="fas fa-play"></i> Iniciar
+            </button>
         </div>
-        <button class="btn-cmd btn-gray" id="btnRelatorio"><i class="fas fa-file-image"></i> Relatório</button>
-        <button class="btn-cmd btn-red" onclick="limpar()"><i class="fas fa-trash"></i> Limpar</button>
+        
+        <button class="btn-cmd btn-gray" id="btnRelatorio" onclick="gerarRelatorio()">
+            <i class="fas fa-file-image"></i> Relatório
+        </button>
+        <button class="btn-cmd btn-red" onclick="limparDados()">
+            <i class="fas fa-trash"></i> Limpar
+        </button>
 
         <h2 class="section-header">Atividades em Andamento</h2>
         <div id="ativos-cont"></div>
@@ -130,141 +455,396 @@
         Contato: marciodom99@gmail.com
     </footer>
 
-    <div class="modal" id="nameM"><div class="m-box">
-        <h3>Nome da Criança</h3>
-        <input type="text" id="inNome" oninput="checkInputs()" style="width:100%; padding:12px; margin:15px 0; border:2px solid #ddd; border-radius:8px;">
-        <button class="btn-cmd btn-blue" style="width:100%" onclick="closeM('nameM')">OK</button>
-    </div></div>
-
-    <div class="modal" id="toyM"><div class="m-box">
-        <h3>Escolha o Brinquedo</h3>
-        <div class="options-grid">
-            <button class="opt-btn" onclick="setToy('Carrinho', 'fa-solid fa-car')"><i class="fa-solid fa-car"></i> Carrinho</button>
-            <button class="opt-btn" onclick="setToy('Motinha', 'fa-solid fa-motorcycle')"><i class="fa-solid fa-motorcycle"></i> Motinha</button>
-            <button class="opt-btn" onclick="setToy('Inflável', 'fa-solid fa-cloud')"><i class="fa-solid fa-cloud"></i> Inflável</button>
-            <button class="opt-btn" onclick="setToy('Cercadinho', 'fa-solid fa-border-all')"><i class="fa-solid fa-border-all"></i> Cercadinho</button>
-            <button class="opt-btn" onclick="setToy('Pula-Pula', 'fa-solid fa-child-reaching')"><i class="fa-solid fa-child-reaching"></i> Pula-Pula</button>
-            <button class="opt-btn" onclick="setToy('Balançador', 'fa-solid fa-arrows-left-right')"><i class="fa-solid fa-arrows-left-right"></i> Balançador</button>
+    <!-- Modal Configurações -->
+    <div class="modal" id="configM">
+        <div class="m-box">
+            <h3>⚙️ Configurações do Sistema</h3>
+            
+            <div class="config-section">
+                <h4><i class="fas fa-gamepad"></i> Configurar Preços dos Brinquedos</h4>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
+                    Defina o tempo e valor para cada brinquedo. O sistema cobrará pelo tempo configurado.
+                </p>
+                
+                <div id="config-cont">
+                    <!-- Configurações serão carregadas aqui -->
+                </div>
+                
+                <button class="config-save-btn" onclick="salvarConfiguracoes()">
+                    <i class="fas fa-save"></i> SALVAR CONFIGURAÇÕES
+                </button>
+            </div>
+            
+            <button class="btn-cmd btn-red" style="width:100%; margin-top:10px" onclick="fecharModal('configM')">
+                Fechar
+            </button>
         </div>
-        <button class="btn-cmd btn-red" style="width:100%; margin-top:10px" onclick="closeM('toyM')">Fechar</button>
-    </div></div>
+    </div>
 
-    <div class="modal" id="timeM"><div class="m-box">
-        <h3>Tempo</h3>
-        <div class="options-grid">
-            <button class="opt-btn" onclick="setTime(5)">5 min</button>
-            <button class="opt-btn" onclick="setTime(10)">10 min</button>
-            <button class="opt-btn" onclick="setTime(15)">15 min</button>
-            <button class="opt-btn" onclick="setTime(30)">30 min</button>
+    <!-- Modal Nome -->
+    <div class="modal" id="nameM">
+        <div class="m-box">
+            <h3>Nome da Criança</h3>
+            <input type="text" id="inNome" oninput="validarBotoes()" 
+                   placeholder="Digite o nome da criança"
+                   style="width:100%; padding:12px; margin:15px 0; border:2px solid #ddd; border-radius:8px;">
+            <button class="btn-cmd btn-blue" style="width:100%" onclick="fecharModal('nameM')">
+                OK
+            </button>
         </div>
-    </div></div>
+    </div>
+
+    <!-- Modal Brinquedos -->
+    <div class="modal" id="toyM">
+        <div class="m-box">
+            <h3>Escolha o Brinquedo</h3>
+            <div class="options-grid">
+                <button class="opt-btn" onclick="selecionarBrinquedo('Carrinho', 'fa-solid fa-car')">
+                    <i class="fa-solid fa-car"></i> Carrinho
+                </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Motinha', 'fa-solid fa-motorcycle')">
+                    <i class="fa-solid fa-motorcycle"></i> Motinha
+                </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Inflável', 'fa-solid fa-cloud')">
+                    <i class="fa-solid fa-cloud"></i> Inflável
+                </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Cercadinho', 'fa-solid fa-border-all')">
+                    <i class="fa-solid fa-border-all"></i> Cercadinho
+                </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Pula-Pula', 'fa-solid fa-child-reaching')">
+                    <i class="fa-solid fa-child-reaching"></i> Pula-Pula
+                </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Balançador', 'fa-solid fa-arrows-left-right')">
+                    <i class="fa-solid fa-arrows-left-right"></i> Balançador
+                </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Patinete', 'patinete-emoji')">
+                    <span class="emoji-icon">🛴</span> Patinete
+                </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Bike', 'fa-solid fa-bicycle')">
+                    <i class="fa-solid fa-bicycle"></i> Bike
+                </button>
+            </div>
+            <button class="btn-cmd btn-red" style="width:100%; margin-top:10px" onclick="fecharModal('toyM')">
+                Fechar
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Tempo -->
+    <div class="modal" id="timeM">
+        <div class="m-box">
+            <h3>Tempo</h3>
+            <div class="options-grid">
+                <button class="opt-btn" onclick="selecionarTempo(5)">5 min</button>
+                <button class="opt-btn" onclick="selecionarTempo(10)">10 min</button>
+                <button class="opt-btn" onclick="selecionarTempo(15)">15 min</button>
+                <button class="opt-btn" onclick="selecionarTempo(20)">20 min</button>
+                <button class="opt-btn" onclick="selecionarTempo(30)">30 min</button>
+                <button class="opt-btn" onclick="selecionarTempo(60)">60 min</button>
+            </div>
+            <button class="btn-cmd btn-red" style="width:100%; margin-top:10px" onclick="fecharModal('timeM')">
+                Fechar
+            </button>
+        </div>
+    </div>
 
     <script>
-        let ativos = [], hist = [], selToy = "", selIcon = "", selTime = 0;
-        let audioIntervals = {}; 
+        // ============================================
+        // VARIÁVEIS GLOBAIS
+        // ============================================
+        let atividadesAtivas = [];
+        let historico = [];
+        let brinquedoSelecionado = "";
+        let iconeSelecionado = "";
+        let tempoSelecionado = 0;
+        let intervalosAudio = {};
         
-        const audioPim = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-        audioPim.preload = 'auto';
-
-        function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-BR'); }
-        setInterval(updateClock, 1000); updateClock();
-
-        function openM(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeM(id) { document.getElementById(id).style.display = 'none'; }
+        // Configurações padrão
+        let configuracoes = {
+            precoPorMinuto: 0.70,
+            brinquedosConfig: {
+                'Carrinho': { tempo: 10, valor: 7.00 },
+                'Motinha': { tempo: 10, valor: 7.00 },
+                'Inflável': { tempo: 10, valor: 7.00 },
+                'Cercadinho': { tempo: 10, valor: 7.00 },
+                'Pula-Pula': { tempo: 10, valor: 7.00 },
+                'Balançador': { tempo: 10, valor: 7.00 },
+                'Patinete': { tempo: 10, valor: 7.00 },
+                'Bike': { tempo: 10, valor: 7.00 }
+            }
+        };
         
-        function checkInputs() {
+        // Áudio do final do evento (mantido do original)
+        const audioFinal = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        audioFinal.preload = 'auto';
+        
+        // Áudio de início de evento (NOVO - som de confirmação suave)
+        // Usando um som de "beep" curto e suave que funciona consistentemente
+        const audioInicio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==");
+        audioInicio.volume = 0.6;
+        
+        // Função para tocar áudio de início de forma confiável
+        function tocarAudioInicio() {
+            try {
+                // Garantir que o áudio está no início
+                audioInicio.currentTime = 0;
+                
+                // Tentar tocar o áudio
+                const playPromise = audioInicio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log("Áudio de início tocado com sucesso");
+                        })
+                        .catch(error => {
+                            console.log("Erro ao tocar áudio de início:", error);
+                            // Fallback: tentar com áudio embutido simples
+                            tocarBeepFallback();
+                        });
+                }
+            } catch (error) {
+                console.log("Erro no tocarAudioInicio:", error);
+                tocarBeepFallback();
+            }
+        }
+        
+        // Fallback para áudio de início caso o principal falhe
+        function tocarBeepFallback() {
+            try {
+                // Criar um contexto de áudio simples como fallback
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800; // Frequência em Hz
+                oscillator.type = 'sine'; // Tipo de onda
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+                
+                console.log("Beep fallback tocado");
+            } catch (error) {
+                console.log("Fallback de áudio também falhou:", error);
+            }
+        }
+        
+        // Função para tocar áudio do final (mantida do original)
+        function tocarAudioFinal() {
+            try {
+                audioFinal.currentTime = 0;
+                audioFinal.play().catch(() => {
+                    // Fallback se o áudio externo falhar
+                    tocarBeepFallback();
+                });
+            } catch(e) {
+                console.log("Erro ao tocar áudio final:", e);
+                tocarBeepFallback();
+            }
+        }
+
+        // ============================================
+        // FUNÇÕES DE INICIALIZAÇÃO
+        // ============================================
+        function atualizarRelogio() {
+            const agora = new Date();
+            document.getElementById('clock').textContent = agora.toLocaleTimeString('pt-BR');
+        }
+        setInterval(atualizarRelogio, 1000);
+        atualizarRelogio();
+
+        // ============================================
+        // FUNÇÕES DE MODAL
+        // ============================================
+        function abrirModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+        
+        function fecharModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        
+        function abrirConfiguracoes() {
+            carregarInterfaceConfig();
+            abrirModal('configM');
+        }
+
+        // ============================================
+        // FUNÇÕES DE SELEÇÃO
+        // ============================================
+        function selecionarBrinquedo(brinquedo, icone) {
+            brinquedoSelecionado = brinquedo;
+            iconeSelecionado = icone;
+            fecharModal('toyM');
+            validarBotoes();
+        }
+        
+        function selecionarTempo(tempo) {
+            tempoSelecionado = tempo;
+            fecharModal('timeM');
+            validarBotoes();
+        }
+        
+        function validarBotoes() {
             const nome = document.getElementById('inNome').value;
             const btn = document.getElementById('btnIniciar');
-            if(nome.trim() !== "" && selToy !== "" && selTime !== 0) {
+            
+            if(nome.trim() !== "" && brinquedoSelecionado !== "" && tempoSelecionado !== 0) {
                 btn.classList.add('btn-ready');
             } else {
                 btn.classList.remove('btn-ready');
             }
         }
 
-        function setToy(t, i) { selToy = t; selIcon = i; closeM('toyM'); checkInputs(); }
-        function setTime(t) { selTime = t; closeM('timeM'); checkInputs(); }
-
-        function iniciar() {
+        // ============================================
+        // FUNÇÕES PRINCIPAIS
+        // ============================================
+        function iniciarAtividade() {
             const nomeInput = document.getElementById('inNome');
-            if(!nomeInput.value || !selToy || !selTime) return alert("Preencha todos os campos!");
+            const nome = nomeInput.value.trim();
             
-            audioPim.play().then(() => { audioPim.pause(); audioPim.currentTime = 0; }).catch(() => {});
-            
-            ativos.push({ id: Date.now(), n: nomeInput.value, t: selToy, ic: selIcon, tm: selTime, st: new Date().getTime(), audioActive: false });
-            save(); draw();
-            
-            nomeInput.value = "";
-            selToy = ""; selIcon = ""; selTime = 0;
-            checkInputs();
-        }
-
-        function draw() {
-            const cont = document.getElementById('ativos-cont');
-            cont.innerHTML = "";
-            ativos.forEach(a => {
-                cont.innerHTML += `
-                    <div class="active-card" id="card-${a.id}">
-                        <div class="card-row"><span class="child-name">${a.n}</span><i class="${a.ic} toy-icon"></i></div>
-                        <div class="card-row"><span style="color:#666">${a.t}</span><span class="timer-text" id="t-${a.id}">--:--</span></div>
-                        <div class="progress-container"><div class="progress-fill bg-green" id="p-${a.id}"></div></div>
-                        <div class="btn-group-stop">
-                            <button class="btn-stop btn-editar" onclick="editarAtividade(${a.id})"><i class="fas fa-edit"></i> Editar</button>
-                            <button class="btn-stop btn-encerrar" onclick="stopAudio(${a.id}); encerrarManual(${a.id})"><i class="fas fa-times"></i> Encerrar</button>
-                            <button class="btn-stop btn-finish-off" id="btn-f-${a.id}" onclick="concluirEvento(${a.id})"><i class="fas fa-check"></i> Concluir</button>
-                        </div>
-                    </div>`;
-            });
-
-            const hCont = document.getElementById('hist-cont');
-            hCont.innerHTML = "";
-            hist.forEach(h => {
-                const statusClass = h.status === 'ENCERRADO' ? 'manual-end' : 'success';
-                hCont.innerHTML += `
-                    <div class="hist-item ${statusClass}">
-                        <div>
-                            <div class="hist-name">${h.n}</div>
-                            <div class="hist-sub">${h.t} | ${h.tm_real}min usados | ${h.status}</div>
-                        </div>
-                        <div class="hist-val">R$ ${h.v.toFixed(2).replace('.',',')}</div>
-                    </div>`;
-            });
-        }
-
-        function editarAtividade(id) {
-            const idx = ativos.findIndex(x => x.id === id);
-            const a = ativos[idx];
-            const novoNome = prompt("Editar Nome:", a.n);
-            const novoToy = prompt("Editar Brinquedo:", a.t);
-            const novoTime = prompt("Editar Tempo (min):", a.tm);
-            
-            if (novoNome) a.n = novoNome;
-            if (novoToy) a.t = novoToy;
-            if (novoTime && !isNaN(novoTime)) a.tm = parseInt(novoTime);
-            
-            save(); draw();
-        }
-
-        function stopAudio(id) {
-            if (audioIntervals[id]) {
-                clearInterval(audioIntervals[id]);
-                delete audioIntervals[id];
+            // Validação
+            if(!nome || !brinquedoSelecionado || !tempoSelecionado) {
+                alert("Por favor, preencha todos os campos!");
+                return;
             }
+            
+            // Tocar som de confirmação (NOVO - áudio de início confiável)
+            tocarAudioInicio();
+            
+            // Calcular valor com base na configuração
+            let valorPorMinuto = configuracoes.precoPorMinuto;
+            let tempoCobrado = tempoSelecionado; // Tempo que será usado para cobrança
+            
+            // Verificar se há configuração específica para este brinquedo
+            if (configuracoes.brinquedosConfig[brinquedoSelecionado]) {
+                const config = configuracoes.brinquedosConfig[brinquedoSelecionado];
+                valorPorMinuto = config.valor / config.tempo;
+                tempoCobrado = config.tempo; // Usar o tempo configurado para cobrança
+            }
+            
+            // Criar nova atividade
+            const novaAtividade = {
+                id: Date.now(),
+                n: nome,
+                t: brinquedoSelecionado,
+                ic: iconeSelecionado,
+                tm: tempoSelecionado, // Tempo que aparece no timer (selecionado pelo usuário)
+                tempoCobrado: tempoCobrado, // Tempo usado para cálculo de cobrança (configurado ou selecionado)
+                valorPorMinuto: valorPorMinuto, // Valor por minuto para cálculo
+                st: new Date().getTime(),
+                audioAtivo: false
+            };
+            
+            // Adicionar à lista de atividades ativas
+            atividadesAtivas.push(novaAtividade);
+            
+            // Salvar e atualizar interface
+            salvarDados();
+            renderizarAtividadesAtivas();
+            
+            // Limpar seleção
+            nomeInput.value = "";
+            brinquedoSelecionado = "";
+            iconeSelecionado = "";
+            tempoSelecionado = 0;
+            validarBotoes();
+        }
+        
+        function renderizarAtividadesAtivas() {
+            const container = document.getElementById('ativos-cont');
+            if (!container) return;
+            
+            container.innerHTML = "";
+            
+            atividadesAtivas.forEach(atividade => {
+                // Determinar como exibir o ícone (emoji ou ícone FontAwesome)
+                let iconeHTML = '';
+                if (atividade.ic === 'patinete-emoji') {
+                    iconeHTML = '<span class="emoji-icon" style="font-size:1.1rem;">🛴</span>';
+                } else {
+                    iconeHTML = `<i class="${atividade.ic} toy-icon"></i>`;
+                }
+                
+                const card = document.createElement('div');
+                card.className = 'active-card';
+                card.id = `card-${atividade.id}`;
+                
+                card.innerHTML = `
+                    <div class="card-row">
+                        <span class="child-name">${atividade.n}</span>
+                        ${iconeHTML}
+                    </div>
+                    <div class="card-row">
+                        <span style="color:#666">${atividade.t}</span>
+                        <span class="timer-text" id="t-${atividade.id}">--:--</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-fill bg-green" id="p-${atividade.id}"></div>
+                    </div>
+                    <div class="btn-group-stop">
+                        <button class="btn-stop btn-editar" onclick="editarAtividade(${atividade.id})">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-stop btn-encerrar" onclick="encerrarAtividade(${atividade.id})">
+                            <i class="fas fa-times"></i> Encerrar
+                        </button>
+                        <button class="btn-stop btn-finish-off" id="btn-f-${atividade.id}" onclick="concluirAtividade(${atividade.id})">
+                            <i class="fas fa-check"></i> Concluir
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+        
+        function renderizarHistorico() {
+            const container = document.getElementById('hist-cont');
+            if (!container) return;
+            
+            container.innerHTML = "";
+            
+            historico.forEach(item => {
+                const div = document.createElement('div');
+                div.className = `hist-item ${item.status === 'ENCERRADO' ? 'manual-end' : 'success'}`;
+                
+                div.innerHTML = `
+                    <div>
+                        <div class="hist-name">${item.n}</div>
+                        <div class="hist-sub">${item.t} | ${item.tm_real}min | ${item.status}</div>
+                    </div>
+                    <div class="hist-val">R$ ${item.v.toFixed(2).replace('.',',')}</div>
+                `;
+                
+                container.appendChild(div);
+            });
         }
 
+        // ============================================
+        // FUNÇÕES DE TEMPO E ÁUDIO
+        // ============================================
         setInterval(() => {
             const agora = new Date().getTime();
-            ativos.forEach(a => {
-                const decorridoSeg = Math.floor((agora - a.st) / 1000);
-                const restanteSeg = (a.tm * 60) - decorridoSeg;
-                const display = document.getElementById(`t-${a.id}`);
-                const bar = document.getElementById(`p-${a.id}`);
-                const btnFinish = document.getElementById(`btn-f-${a.id}`);
+            
+            atividadesAtivas.forEach(atividade => {
+                const decorridoSeg = Math.floor((agora - atividade.st) / 1000);
+                const restanteSeg = (atividade.tm * 60) - decorridoSeg; // Usar o tempo do timer (tm)
+                const display = document.getElementById(`t-${atividade.id}`);
+                const bar = document.getElementById(`p-${atividade.id}`);
+                const btnFinish = document.getElementById(`btn-f-${atividade.id}`);
                 
-                if(display) display.innerText = restanteSeg > 0 ? Math.floor(restanteSeg/60) + ":" + (restanteSeg%60).toString().padStart(2,'0') : "0:00";
+                if(display) display.innerText = restanteSeg > 0 ? 
+                    Math.floor(restanteSeg/60) + ":" + (restanteSeg%60).toString().padStart(2,'0') : "0:00";
                 
                 if(bar) {
-                    bar.style.width = Math.max(0, (restanteSeg/(a.tm*60))*100) + "%";
+                    bar.style.width = Math.max(0, (restanteSeg/(atividade.tm*60))*100) + "%";
                     bar.classList.remove('bg-green', 'bg-orange', 'bg-red');
                     if (restanteSeg > 180) bar.classList.add('bg-green');
                     else if (restanteSeg > 60) bar.classList.add('bg-orange');
@@ -272,7 +852,7 @@
                 }
                 
                 if(restanteSeg <= 0) {
-                    const card = document.getElementById(`card-${a.id}`);
+                    const card = document.getElementById(`card-${atividade.id}`);
                     if(card && !card.classList.contains('blink-red')) card.classList.add('blink-red');
                     
                     if(btnFinish && !btnFinish.classList.contains('btn-finish-on')) {
@@ -280,83 +860,382 @@
                         btnFinish.classList.add('btn-finish-on');
                     }
 
-                    if(!a.audioActive) {
-                        a.audioActive = true;
-                        audioPim.play().catch(() => {});
-                        audioIntervals[a.id] = setInterval(() => {
-                            audioPim.currentTime = 0;
-                            audioPim.play().catch(() => {});
+                    // Sistema de áudio no final do tempo (usando áudio do final)
+                    if(!atividade.audioAtivo) {
+                        atividade.audioAtivo = true;
+                        
+                        // Tocar imediatamente
+                        tocarAudioFinal();
+                        
+                        // Configurar intervalo para repetir (conforme original)
+                        intervalosAudio[atividade.id] = setInterval(() => {
+                            tocarAudioFinal();
                         }, 4000);
                     }
                 }
             });
         }, 1000);
+        
+        function pararAlertaAudio(id) {
+            if(intervalosAudio[id]) {
+                clearInterval(intervalosAudio[id]);
+                delete intervalosAudio[id];
+            }
+        }
 
-        function encerrarManual(id) {
-            const idx = ativos.findIndex(x => x.id === id);
-            const a = ativos[idx];
-            const agora = new Date().getTime();
-            const decorridoMin = Math.max(0, Math.floor((agora - a.st) / 1000 / 60));
+        // ============================================
+        // FUNÇÕES DE GERENCIAMENTO DE ATIVIDADES
+        // ============================================
+        function editarAtividade(id) {
+            const index = atividadesAtivas.findIndex(a => a.id === id);
+            if(index === -1) return;
             
-            // Regra de cobrança: R$ 0,00 se encerrar com 2 minutos ou menos
-            let valor = 0;
-            if (decorridoMin > 2) {
-                valor = decorridoMin * 0.70;
+            const atividade = atividadesAtivas[index];
+            const novoNome = prompt("Editar nome:", atividade.n);
+            const novoToy = prompt("Editar brinquedo:", atividade.t);
+            const novoTime = prompt("Editar tempo (minutos):", atividade.tm);
+            
+            if(novoNome !== null) atividade.n = novoNome;
+            if(novoToy !== null) {
+                atividade.t = novoToy;
+                // Atualizar ícone baseado no brinquedo
+                const icones = {
+                    'Carrinho': 'fa-solid fa-car',
+                    'Motinha': 'fa-solid fa-motorcycle',
+                    'Inflável': 'fa-solid fa-cloud',
+                    'Cercadinho': 'fa-solid fa-border-all',
+                    'Pula-Pula': 'fa-solid fa-child-reaching',
+                    'Balançador': 'fa-solid fa-arrows-left-right',
+                    'Patinete': 'patinete-emoji',
+                    'Bike': 'fa-solid fa-bicycle'
+                };
+                atividade.ic = icones[novoToy] || 'fa-solid fa-gamepad';
+            }
+            if(novoTime !== null && !isNaN(novoTime)) {
+                atividade.tm = parseInt(novoTime);
+                // Recalcular o tempo cobrado se houver configuração específica
+                if (configuracoes.brinquedosConfig[atividade.t]) {
+                    const config = configuracoes.brinquedosConfig[atividade.t];
+                    atividade.tempoCobrado = config.tempo;
+                    atividade.valorPorMinuto = config.valor / config.tempo;
+                } else {
+                    atividade.tempoCobrado = parseInt(novoTime);
+                    atividade.valorPorMinuto = configuracoes.precoPorMinuto;
+                }
             }
             
-            hist.unshift({ ...a, v: valor, tm_real: decorridoMin, status: 'ENCERRADO', h: new Date().toLocaleTimeString('pt-BR') });
-            ativos.splice(idx, 1);
-            save(); draw();
+            salvarDados();
+            renderizarAtividadesAtivas();
         }
-
-        function concluirEvento(id) {
-            const idx = ativos.findIndex(x => x.id === id);
-            const a = ativos[idx];
-            const agora = new Date().getTime();
-            const decorridoSeg = Math.floor((agora - a.st) / 1000);
-            if (decorridoSeg < (a.tm * 60)) return;
+        
+        function encerrarAtividade(id) {
+            if(!confirm("Tem certeza que deseja encerrar esta atividade?")) return;
             
-            stopAudio(id);
-            const valor = a.tm * 0.70;
-            hist.unshift({ ...a, v: valor, tm_real: a.tm, status: 'CONCLUÍDO', h: new Date().toLocaleTimeString('pt-BR') });
-            ativos.splice(idx, 1);
-            save(); draw();
+            pararAlertaAudio(id);
+            
+            const index = atividadesAtivas.findIndex(a => a.id === id);
+            if(index === -1) return;
+            
+            const atividade = atividadesAtivas[index];
+            const agora = new Date().getTime();
+            const decorridoMin = Math.max(0, Math.floor((agora - atividade.st) / 1000 / 60));
+            
+            // Calcular valor (não cobrar se menos de 2 minutos)
+            let valor = 0;
+            if(decorridoMin > 2) {
+                // Usar o tempo decorrido para cálculo proporcional
+                valor = decorridoMin * atividade.valorPorMinuto;
+            }
+            
+            // Adicionar ao histórico
+            historico.unshift({
+                ...atividade,
+                v: valor,
+                tm_real: decorridoMin, // Tempo real usado em minutos
+                status: 'ENCERRADO',
+                h: new Date().toLocaleTimeString('pt-BR')
+            });
+            
+            // Remover da lista de atividades ativas
+            atividadesAtivas.splice(index, 1);
+            
+            // Atualizar interface
+            salvarDados();
+            renderizarAtividadesAtivas();
+            renderizarHistorico();
+        }
+        
+        function concluirAtividade(id) {
+            const index = atividadesAtivas.findIndex(a => a.id === id);
+            if(index === -1) return;
+            
+            const atividade = atividadesAtivas[index];
+            const agora = new Date().getTime();
+            const decorridoSeg = Math.floor((agora - atividade.st) / 1000);
+            
+            // Verificar se o tempo mínimo foi alcançado
+            if(decorridoSeg < (atividade.tm * 60)) {
+                alert("Aguarde o tempo terminar para concluir!");
+                return;
+            }
+            
+            pararAlertaAudio(id);
+            
+            // CALCULO CORRIGIDO: Usar o tempo REAL (tm) e valorPorMinuto para cálculo proporcional
+            // Independente de ter configuração específica, o cálculo deve ser proporcional ao tempo usado
+            let valor = atividade.tm * atividade.valorPorMinuto;
+            
+            // Arredondar para 2 casas decimais
+            valor = Math.round(valor * 100) / 100;
+            
+            // Adicionar ao histórico
+            historico.unshift({
+                ...atividade,
+                v: valor,
+                // Usar o tempo REAL (tm) que foi o tempo do timer
+                tm_real: atividade.tm, // Tempo real usado (o tempo do timer)
+                status: 'CONCLUÍDO',
+                h: new Date().toLocaleTimeString('pt-BR')
+            });
+            
+            // Remover da lista de atividades ativas
+            atividadesAtivas.splice(index, 1);
+            
+            // Atualizar interface
+            salvarDados();
+            renderizarAtividadesAtivas();
+            renderizarHistorico();
         }
 
-        function save() { localStorage.setItem('polar_v24', JSON.stringify({ ativos, hist })); }
-        function load() {
-            const d = JSON.parse(localStorage.getItem('polar_v24') || '{"ativos":[],"hist":[]}');
-            ativos = d.ativos; hist = d.hist; draw();
+        // ============================================
+        // FUNÇÕES DE CONFIGURAÇÃO
+        // ============================================
+        function carregarInterfaceConfig() {
+            const container = document.getElementById('config-cont');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            Object.keys(configuracoes.brinquedosConfig).forEach(brinquedo => {
+                const config = configuracoes.brinquedosConfig[brinquedo];
+                const icone = getIconeBrinquedo(brinquedo);
+                
+                // Determinar como exibir o ícone (emoji ou ícone FontAwesome)
+                let iconeHTML = '';
+                if (icone === 'patinete-emoji') {
+                    iconeHTML = '<span style="font-size:1rem;">🛴</span>';
+                } else {
+                    iconeHTML = `<i class="${icone}"></i>`;
+                }
+                
+                const div = document.createElement('div');
+                div.className = 'config-option';
+                div.innerHTML = `
+                    <div class="config-label">
+                        ${iconeHTML}
+                        <span>${brinquedo}</span>
+                    </div>
+                    <div class="config-value">
+                        ${config.tempo} min - R$ ${config.valor.toFixed(2)}
+                    </div>
+                    <button onclick="editarConfiguracao('${brinquedo}')" 
+                            style="background:var(--polar-blue);color:white;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                `;
+                
+                container.appendChild(div);
+            });
         }
-        function limpar() { if(confirm("Deseja limpar todos os dados?")) { localStorage.clear(); location.reload(); } }
+        
+        function getIconeBrinquedo(brinquedo) {
+            const icones = {
+                'Carrinho': 'fa-solid fa-car',
+                'Motinha': 'fa-solid fa-motorcycle',
+                'Inflável': 'fa-solid fa-cloud',
+                'Cercadinho': 'fa-solid fa-border-all',
+                'Pula-Pula': 'fa-solid fa-child-reaching',
+                'Balançador': 'fa-solid fa-arrows-left-right',
+                'Patinete': 'patinete-emoji',
+                'Bike': 'fa-solid fa-bicycle'
+            };
+            return icones[brinquedo] || 'fa-solid fa-gamepad';
+        }
+        
+        function editarConfiguracao(brinquedo) {
+            const config = configuracoes.brinquedosConfig[brinquedo];
+            
+            // Solicitar novo tempo
+            const novoTempo = prompt(`Configurar tempo para "${brinquedo}" (minutos):`, config.tempo);
+            if (novoTempo === null) return;
+            
+            const tempo = parseInt(novoTempo);
+            if (isNaN(tempo) || tempo <= 0) {
+                alert("Tempo inválido! Por favor, digite um número maior que zero.");
+                return;
+            }
+            
+            // Solicitar novo valor
+            const novoValorStr = prompt(`Configurar valor para "${brinquedo}" (R$):`, config.valor.toFixed(2));
+            if (novoValorStr === null) return;
+            
+            const valor = parseFloat(novoValorStr.replace(',', '.'));
+            if (isNaN(valor) || valor < 0) {
+                alert("Valor inválido! Por favor, digite um valor numérico válido.");
+                return;
+            }
+            
+            // Atualizar configuração
+            configuracoes.brinquedosConfig[brinquedo] = {
+                tempo: tempo,
+                valor: valor
+            };
+            
+            // Recarregar interface
+            carregarInterfaceConfig();
+        }
+        
+        function salvarConfiguracoes() {
+            salvarDados();
+            alert('Configurações salvas com sucesso!');
+            fecharModal('configM');
+        }
 
-        document.getElementById('btnRelatorio').onclick = () => {
-            if (hist.length === 0) return alert("Sem dados!");
+        // ============================================
+        // FUNÇÕES DE PERSISTÊNCIA
+        // ============================================
+        function salvarDados() {
+            const dados = {
+                atividadesAtivas: atividadesAtivas,
+                historico: historico,
+                configuracoes: configuracoes,
+                dataSalvamento: new Date().toISOString()
+            };
+            
+            try {
+                localStorage.setItem('polar_brinque_v7', JSON.stringify(dados));
+            } catch(e) {
+                console.error("Erro ao salvar dados:", e);
+            }
+        }
+        
+        function carregarDados() {
+            try {
+                const dadosSalvos = localStorage.getItem('polar_brinque_v7');
+                if (!dadosSalvos) return;
+                
+                const dados = JSON.parse(dadosSalvos);
+                
+                if (dados.atividadesAtivas) atividadesAtivas = dados.atividadesAtivas;
+                if (dados.historico) historico = dados.historico;
+                if (dados.configuracoes) configuracoes = dados.configuracoes;
+                
+                // Renderizar dados carregados
+                renderizarAtividadesAtivas();
+                renderizarHistorico();
+            } catch(e) {
+                console.error("Erro ao carregar dados:", e);
+            }
+        }
+        
+        function limparDados() {
+            if(atividadesAtivas.length > 0) {
+                alert("Existem atividades em andamento. Encerre-as primeiro.");
+                return;
+            }
+            
+            if(confirm("Tem certeza que deseja limpar TODOS os dados?\nEsta ação não pode ser desfeita.")) {
+                localStorage.clear();
+                historico = [];
+                renderizarHistorico();
+                alert("Todos os dados foram removidos.");
+            }
+        }
+
+        // ============================================
+        // FUNÇÃO DE RELATÓRIO
+        // ============================================
+        function gerarRelatorio() {
+            if(historico.length === 0) {
+                alert("Não há dados para gerar relatório.");
+                return;
+            }
+            
             const area = document.createElement('div');
             area.style.cssText = "position:absolute;left:-9999px;width:800px;background:white;padding:40px;";
-            let totalSoma = 0;
-            const rows = hist.map((h, i) => {
-                totalSoma += h.v;
-                const statusColor = h.status === 'ENCERRADO' ? '#d32f2f' : '#4caf50';
-                return `<tr style="border-bottom:1px solid #eee">
-                    <td style="padding:10px">${i+1}</td>
-                    <td style="padding:10px;font-weight:bold">${h.n}</td>
-                    <td style="padding:10px">${h.t}</td>
-                    <td style="padding:10px;text-align:center">${h.tm_real} min</td>
-                    <td style="padding:10px;color:${statusColor};font-weight:bold;text-align:center">${h.status}</td>
-                    <td style="padding:10px;text-align:right">R$ ${h.v.toFixed(2).replace('.',',')}</td>
-                </tr>`;
+            
+            let total = 0;
+            const linhas = historico.map((item, index) => {
+                total += item.v;
+                const corStatus = item.status === 'ENCERRADO' ? '#d32f2f' : '#4caf50';
+                return `
+                    <tr style="border-bottom:1px solid #eee">
+                        <td style="padding:10px">${index + 1}</td>
+                        <td style="padding:10px;font-weight:bold">${item.n}</td>
+                        <td style="padding:10px">${item.t}</td>
+                        <td style="padding:10px;text-align:center">${item.tm_real} min</td>
+                        <td style="padding:10px;color:${corStatus};font-weight:bold;text-align:center">${item.status}</td>
+                        <td style="padding:10px;text-align:right">R$ ${item.v.toFixed(2).replace('.',',')}</td>
+                    </tr>
+                `;
             }).join('');
-            area.innerHTML = `<div style="text-align:center;margin-bottom:20px;border-bottom:4px solid #ffcc00;padding-bottom:10px"><h1>Polar_Brinque</h1><h2>Relatório</h2></div><table style="width:100%;border-collapse:collapse"><tr style="background:#0099ff;color:white"><th style="padding:10px;text-align:left">#</th><th style="padding:10px;text-align:left">Nome</th><th style="padding:10px;text-align:left">Brinquedo</th><th style="padding:10px">Tempo</th><th style="padding:10px">Status</th><th style="padding:10px;text-align:right">Valor</th></tr>${rows}</table><div style="background:#f0f7ff;padding:20px;margin-top:20px;border-radius:10px;"><p style="color:#0099ff;font-size:24px">Receita Total: <b>R$ ${totalSoma.toFixed(2).replace('.',',')}</b></p></div>`;
+            
+            area.innerHTML = `
+                <div style="text-align:center;margin-bottom:20px;border-bottom:4px solid #ffcc00;padding-bottom:10px">
+                    <h1>Polar_Brinque</h1>
+                    <h2>Relatório</h2>
+                    <p style="color:#666">${new Date().toLocaleDateString('pt-BR')}</p>
+                </div>
+                <table style="width:100%;border-collapse:collapse">
+                    <tr style="background:#0099ff;color:white">
+                        <th style="padding:10px;text-align:left">#</th>
+                        <th style="padding:10px;text-align:left">Nome</th>
+                        <th style="padding:10px;text-align:left">Brinquedo</th>
+                        <th style="padding:10px;text-align:center">Tempo</th>
+                        <th style="padding:10px;text-align:center">Status</th>
+                        <th style="padding:10px;text-align:right">Valor</th>
+                    </tr>
+                    ${linhas}
+                </table>
+                <div style="background:#f0f7ff;padding:20px;margin-top:20px;border-radius:10px;">
+                    <p style="color:#0099ff;font-size:24px">Receita Total: <b>R$ ${total.toFixed(2).replace('.',',')}</b></p>
+                </div>
+            `;
+            
             document.body.appendChild(area);
+            
             html2canvas(area).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'Relatorio_Polar.png'; link.href = canvas.toDataURL(); link.click();
+                link.download = `Relatorio_Polar_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
                 document.body.removeChild(area);
             });
-        };
+        }
 
-        load();
+        // ============================================
+        // INICIALIZAÇÃO DO SISTEMA
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Carregar dados salvos
+            carregarDados();
+            
+            // Fechar modais ao clicar fora
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if(e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Focar no input quando abrir modal de nome
+            document.getElementById('nameM').addEventListener('click', () => {
+                setTimeout(() => {
+                    document.getElementById('inNome').focus();
+                }, 100);
+            });
+        });
     </script>
 </body>
 </html>
