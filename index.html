@@ -280,7 +280,7 @@
         }
         .options-grid { 
             display: grid; 
-            grid-template-columns: 1fr 1fr; 
+            grid-template-columns: repeat(3, 1fr); 
             gap: 8px; 
             margin-top: 10px; 
             margin-bottom: 15px;
@@ -486,7 +486,7 @@
         <div class="m-box">
             <h3>Nome da Criança</h3>
             <input type="text" id="inNome" oninput="validarBotoes()" 
-                   placeholder="Digite o nome da criança"
+                   placeholder="Digite o nome da criança" required
                    style="width:100%; padding:12px; margin:15px 0; border:2px solid #ddd; border-radius:8px;">
             <button class="btn-cmd btn-blue" style="width:100%" onclick="fecharModal('nameM')">
                 OK
@@ -523,6 +523,12 @@
                 <button class="opt-btn" onclick="selecionarBrinquedo('Bike', 'fa-solid fa-bicycle')">
                     <i class="fa-solid fa-bicycle"></i> Bike
                 </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Triciclo', 'fa-solid fa-bicycle')">
+                    <i class="fa-solid fa-bicycle"></i> Triciclo
+                </button>
+                <button class="opt-btn" onclick="selecionarBrinquedo('Playground', 'fa-solid fa-fort-awesome')">
+                    <i class="fa-solid fa-fort-awesome"></i> Playground
+                </button>
             </div>
             <button class="btn-cmd btn-red" style="width:100%; margin-top:10px" onclick="fecharModal('toyM')">
                 Fechar
@@ -549,6 +555,8 @@
     </div>
 
     <script>
+        'use strict';
+
         // ============================================
         // VARIÁVEIS GLOBAIS
         // ============================================
@@ -561,35 +569,35 @@
         
         // Configurações padrão
         let configuracoes = {
-            precoPorMinuto: 0.70,
+            precoPorMinuto: 1.00,
             brinquedosConfig: {
-                'Carrinho': { tempo: 10, valor: 7.00 },
-                'Motinha': { tempo: 10, valor: 7.00 },
-                'Inflável': { tempo: 10, valor: 7.00 },
-                'Cercadinho': { tempo: 10, valor: 7.00 },
-                'Pula-Pula': { tempo: 10, valor: 7.00 },
-                'Balançador': { tempo: 10, valor: 7.00 },
-                'Patinete': { tempo: 10, valor: 7.00 },
-                'Bike': { tempo: 10, valor: 7.00 }
-            }
+                'Carrinho': { tempo: 10, valor: 10.00 },
+                'Motinha': { tempo: 10, valor: 10.00 },
+                'Inflável': { tempo: 10, valor: 10.00 },
+                'Cercadinho': { tempo: 10, valor: 10.00 },
+                'Pula-Pula': { tempo: 10, valor: 10.00 },
+                'Balançador': { tempo: 10, valor: 10.00 },
+                'Patinete': { tempo: 10, valor: 10.00 },
+                'Bike': { tempo: 10, valor: 10.00 },
+                'Triciclo': { tempo: 10, valor: 10.00 },
+                'Playground': { tempo: 15, valor: 10.00 }
+            },
+            // ATUALIZADO: Adicionada configuração de tolerância
+            toleranciaMinutos: 1 // ATUALIZADO: De 2 para 1 minuto
         };
         
-        // Áudio do final do evento (mantido do original)
+        // Áudio do final do evento
         const audioFinal = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
         audioFinal.preload = 'auto';
         
-        // Áudio de início de evento (NOVO - som de confirmação suave)
-        // Usando um som de "beep" curto e suave que funciona consistentemente
+        // Áudio de início de evento
         const audioInicio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==");
         audioInicio.volume = 0.6;
         
-        // Função para tocar áudio de início de forma confiável
-        function tocarAudioInicio() {
+        // Função para tocar áudio de início
+        const tocarAudioInicio = () => {
             try {
-                // Garantir que o áudio está no início
                 audioInicio.currentTime = 0;
-                
-                // Tentar tocar o áudio
                 const playPromise = audioInicio.play();
                 
                 if (playPromise !== undefined) {
@@ -599,7 +607,6 @@
                         })
                         .catch(error => {
                             console.log("Erro ao tocar áudio de início:", error);
-                            // Fallback: tentar com áudio embutido simples
                             tocarBeepFallback();
                         });
                 }
@@ -607,12 +614,11 @@
                 console.log("Erro no tocarAudioInicio:", error);
                 tocarBeepFallback();
             }
-        }
+        };
         
-        // Fallback para áudio de início caso o principal falhe
-        function tocarBeepFallback() {
+        // Fallback para áudio de início
+        const tocarBeepFallback = () => {
             try {
-                // Criar um contexto de áudio simples como fallback
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
@@ -620,8 +626,8 @@
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
-                oscillator.frequency.value = 800; // Frequência em Hz
-                oscillator.type = 'sine'; // Tipo de onda
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
                 
                 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
@@ -633,65 +639,64 @@
             } catch (error) {
                 console.log("Fallback de áudio também falhou:", error);
             }
-        }
+        };
         
-        // Função para tocar áudio do final (mantida do original)
-        function tocarAudioFinal() {
+        // Função para tocar áudio do final
+        const tocarAudioFinal = () => {
             try {
                 audioFinal.currentTime = 0;
                 audioFinal.play().catch(() => {
-                    // Fallback se o áudio externo falhar
                     tocarBeepFallback();
                 });
             } catch(e) {
                 console.log("Erro ao tocar áudio final:", e);
                 tocarBeepFallback();
             }
-        }
+        };
 
         // ============================================
         // FUNÇÕES DE INICIALIZAÇÃO
         // ============================================
-        function atualizarRelogio() {
+        const atualizarRelogio = () => {
             const agora = new Date();
             document.getElementById('clock').textContent = agora.toLocaleTimeString('pt-BR');
-        }
+        };
         setInterval(atualizarRelogio, 1000);
         atualizarRelogio();
 
         // ============================================
         // FUNÇÕES DE MODAL
         // ============================================
-        function abrirModal(id) {
+        const abrirModal = (id) => {
             document.getElementById(id).style.display = 'flex';
-        }
+        };
         
-        function fecharModal(id) {
+        const fecharModal = (id) => {
             document.getElementById(id).style.display = 'none';
-        }
+        };
         
-        function abrirConfiguracoes() {
+        const abrirConfiguracoes = () => {
             carregarInterfaceConfig();
             abrirModal('configM');
-        }
+        };
 
         // ============================================
         // FUNÇÕES DE SELEÇÃO
         // ============================================
-        function selecionarBrinquedo(brinquedo, icone) {
+        const selecionarBrinquedo = (brinquedo, icone) => {
             brinquedoSelecionado = brinquedo;
             iconeSelecionado = icone;
             fecharModal('toyM');
             validarBotoes();
-        }
+        };
         
-        function selecionarTempo(tempo) {
+        const selecionarTempo = (tempo) => {
             tempoSelecionado = tempo;
             fecharModal('timeM');
             validarBotoes();
-        }
+        };
         
-        function validarBotoes() {
+        const validarBotoes = () => {
             const nome = document.getElementById('inNome').value;
             const btn = document.getElementById('btnIniciar');
             
@@ -700,33 +705,38 @@
             } else {
                 btn.classList.remove('btn-ready');
             }
-        }
+        };
 
         // ============================================
         // FUNÇÕES PRINCIPAIS
         // ============================================
-        function iniciarAtividade() {
+        const iniciarAtividade = () => {
             const nomeInput = document.getElementById('inNome');
             const nome = nomeInput.value.trim();
             
             // Validação
-            if(!nome || !brinquedoSelecionado || !tempoSelecionado) {
-                alert("Por favor, preencha todos os campos!");
+            if (!nomeInput.checkValidity()) {
+                alert("Por favor, preencha o nome da criança!");
                 return;
             }
             
-            // Tocar som de confirmação (NOVO - áudio de início confiável)
+            if(!brinquedoSelecionado || !tempoSelecionado) {
+                alert("Por favor, selecione o brinquedo e o tempo!");
+                return;
+            }
+            
+            // Tocar som de confirmação
             tocarAudioInicio();
             
             // Calcular valor com base na configuração
             let valorPorMinuto = configuracoes.precoPorMinuto;
-            let tempoCobrado = tempoSelecionado; // Tempo que será usado para cobrança
+            let tempoCobrado = tempoSelecionado;
             
             // Verificar se há configuração específica para este brinquedo
             if (configuracoes.brinquedosConfig[brinquedoSelecionado]) {
                 const config = configuracoes.brinquedosConfig[brinquedoSelecionado];
                 valorPorMinuto = config.valor / config.tempo;
-                tempoCobrado = config.tempo; // Usar o tempo configurado para cobrança
+                tempoCobrado = config.tempo;
             }
             
             // Criar nova atividade
@@ -735,9 +745,9 @@
                 n: nome,
                 t: brinquedoSelecionado,
                 ic: iconeSelecionado,
-                tm: tempoSelecionado, // Tempo que aparece no timer (selecionado pelo usuário)
-                tempoCobrado: tempoCobrado, // Tempo usado para cálculo de cobrança (configurado ou selecionado)
-                valorPorMinuto: valorPorMinuto, // Valor por minuto para cálculo
+                tm: tempoSelecionado,
+                tempoCobrado: tempoCobrado,
+                valorPorMinuto: valorPorMinuto,
                 st: new Date().getTime(),
                 audioAtivo: false
             };
@@ -755,16 +765,15 @@
             iconeSelecionado = "";
             tempoSelecionado = 0;
             validarBotoes();
-        }
+        };
         
-        function renderizarAtividadesAtivas() {
+        const renderizarAtividadesAtivas = () => {
             const container = document.getElementById('ativos-cont');
             if (!container) return;
             
             container.innerHTML = "";
             
             atividadesAtivas.forEach(atividade => {
-                // Determinar como exibir o ícone (emoji ou ícone FontAwesome)
                 let iconeHTML = '';
                 if (atividade.ic === 'patinete-emoji') {
                     iconeHTML = '<span class="emoji-icon" style="font-size:1.1rem;">🛴</span>';
@@ -803,9 +812,9 @@
                 
                 container.appendChild(card);
             });
-        }
+        };
         
-        function renderizarHistorico() {
+        const renderizarHistorico = () => {
             const container = document.getElementById('hist-cont');
             if (!container) return;
             
@@ -825,7 +834,7 @@
                 
                 container.appendChild(div);
             });
-        }
+        };
 
         // ============================================
         // FUNÇÕES DE TEMPO E ÁUDIO
@@ -835,7 +844,7 @@
             
             atividadesAtivas.forEach(atividade => {
                 const decorridoSeg = Math.floor((agora - atividade.st) / 1000);
-                const restanteSeg = (atividade.tm * 60) - decorridoSeg; // Usar o tempo do timer (tm)
+                const restanteSeg = (atividade.tm * 60) - decorridoSeg;
                 const display = document.getElementById(`t-${atividade.id}`);
                 const bar = document.getElementById(`p-${atividade.id}`);
                 const btnFinish = document.getElementById(`btn-f-${atividade.id}`);
@@ -860,14 +869,14 @@
                         btnFinish.classList.add('btn-finish-on');
                     }
 
-                    // Sistema de áudio no final do tempo (usando áudio do final)
+                    // Sistema de áudio no final do tempo
                     if(!atividade.audioAtivo) {
                         atividade.audioAtivo = true;
                         
                         // Tocar imediatamente
                         tocarAudioFinal();
                         
-                        // Configurar intervalo para repetir (conforme original)
+                        // Configurar intervalo para repetir
                         intervalosAudio[atividade.id] = setInterval(() => {
                             tocarAudioFinal();
                         }, 4000);
@@ -876,17 +885,17 @@
             });
         }, 1000);
         
-        function pararAlertaAudio(id) {
+        const pararAlertaAudio = (id) => {
             if(intervalosAudio[id]) {
                 clearInterval(intervalosAudio[id]);
                 delete intervalosAudio[id];
             }
-        }
+        };
 
         // ============================================
         // FUNÇÕES DE GERENCIAMENTO DE ATIVIDADES
         // ============================================
-        function editarAtividade(id) {
+        const editarAtividade = (id) => {
             const index = atividadesAtivas.findIndex(a => a.id === id);
             if(index === -1) return;
             
@@ -907,7 +916,9 @@
                     'Pula-Pula': 'fa-solid fa-child-reaching',
                     'Balançador': 'fa-solid fa-arrows-left-right',
                     'Patinete': 'patinete-emoji',
-                    'Bike': 'fa-solid fa-bicycle'
+                    'Bike': 'fa-solid fa-bicycle',
+                    'Triciclo': 'fa-solid fa-bicycle',
+                    'Playground': 'fa-solid fa-fort-awesome'
                 };
                 atividade.ic = icones[novoToy] || 'fa-solid fa-gamepad';
             }
@@ -926,9 +937,9 @@
             
             salvarDados();
             renderizarAtividadesAtivas();
-        }
+        };
         
-        function encerrarAtividade(id) {
+        const encerrarAtividade = (id) => {
             if(!confirm("Tem certeza que deseja encerrar esta atividade?")) return;
             
             pararAlertaAudio(id);
@@ -940,9 +951,10 @@
             const agora = new Date().getTime();
             const decorridoMin = Math.max(0, Math.floor((agora - atividade.st) / 1000 / 60));
             
-            // Calcular valor (não cobrar se menos de 2 minutos)
+            // ATUALIZADO: Tolerância alterada de 2 para 1 minuto
+            // Calcular valor (não cobrar se menos de 1 minuto)
             let valor = 0;
-            if(decorridoMin > 2) {
+            if(decorridoMin > configuracoes.toleranciaMinutos) { // ATUALIZADO: Usando a configuração
                 // Usar o tempo decorrido para cálculo proporcional
                 valor = decorridoMin * atividade.valorPorMinuto;
             }
@@ -951,7 +963,7 @@
             historico.unshift({
                 ...atividade,
                 v: valor,
-                tm_real: decorridoMin, // Tempo real usado em minutos
+                tm_real: decorridoMin,
                 status: 'ENCERRADO',
                 h: new Date().toLocaleTimeString('pt-BR')
             });
@@ -963,9 +975,9 @@
             salvarDados();
             renderizarAtividadesAtivas();
             renderizarHistorico();
-        }
+        };
         
-        function concluirAtividade(id) {
+        const concluirAtividade = (id) => {
             const index = atividadesAtivas.findIndex(a => a.id === id);
             if(index === -1) return;
             
@@ -981,8 +993,7 @@
             
             pararAlertaAudio(id);
             
-            // CALCULO CORRIGIDO: Usar o tempo REAL (tm) e valorPorMinuto para cálculo proporcional
-            // Independente de ter configuração específica, o cálculo deve ser proporcional ao tempo usado
+            // Usar o tempo REAL (tm) e valorPorMinuto para cálculo proporcional
             let valor = atividade.tm * atividade.valorPorMinuto;
             
             // Arredondar para 2 casas decimais
@@ -992,8 +1003,7 @@
             historico.unshift({
                 ...atividade,
                 v: valor,
-                // Usar o tempo REAL (tm) que foi o tempo do timer
-                tm_real: atividade.tm, // Tempo real usado (o tempo do timer)
+                tm_real: atividade.tm,
                 status: 'CONCLUÍDO',
                 h: new Date().toLocaleTimeString('pt-BR')
             });
@@ -1005,22 +1015,45 @@
             salvarDados();
             renderizarAtividadesAtivas();
             renderizarHistorico();
-        }
+        };
 
         // ============================================
         // FUNÇÕES DE CONFIGURAÇÃO
         // ============================================
-        function carregarInterfaceConfig() {
+        const carregarInterfaceConfig = () => {
             const container = document.getElementById('config-cont');
             if (!container) return;
             
             container.innerHTML = '';
             
+            // Adicionar configuração de tolerância
+            const toleranciaDiv = document.createElement('div');
+            toleranciaDiv.className = 'config-option';
+            toleranciaDiv.innerHTML = `
+                <div class="config-label">
+                    <i class="fas fa-clock"></i>
+                    <span>Tolerância de não cobrança</span>
+                </div>
+                <div class="config-value">
+                    ${configuracoes.toleranciaMinutos} min
+                </div>
+                <button onclick="editarTolerancia()" 
+                        style="background:var(--polar-blue);color:white;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;">
+                    <i class="fas fa-edit"></i>
+                </button>
+            `;
+            container.appendChild(toleranciaDiv);
+            
+            // Separador
+            const separador = document.createElement('div');
+            separador.style.cssText = 'height:1px;background:#eee;margin:10px 0;';
+            container.appendChild(separador);
+            
+            // Configurações dos brinquedos
             Object.keys(configuracoes.brinquedosConfig).forEach(brinquedo => {
                 const config = configuracoes.brinquedosConfig[brinquedo];
                 const icone = getIconeBrinquedo(brinquedo);
                 
-                // Determinar como exibir o ícone (emoji ou ícone FontAwesome)
                 let iconeHTML = '';
                 if (icone === 'patinete-emoji') {
                     iconeHTML = '<span style="font-size:1rem;">🛴</span>';
@@ -1046,9 +1079,9 @@
                 
                 container.appendChild(div);
             });
-        }
+        };
         
-        function getIconeBrinquedo(brinquedo) {
+        const getIconeBrinquedo = (brinquedo) => {
             const icones = {
                 'Carrinho': 'fa-solid fa-car',
                 'Motinha': 'fa-solid fa-motorcycle',
@@ -1057,12 +1090,14 @@
                 'Pula-Pula': 'fa-solid fa-child-reaching',
                 'Balançador': 'fa-solid fa-arrows-left-right',
                 'Patinete': 'patinete-emoji',
-                'Bike': 'fa-solid fa-bicycle'
+                'Bike': 'fa-solid fa-bicycle',
+                'Triciclo': 'fa-solid fa-bicycle',
+                'Playground': 'fa-solid fa-fort-awesome'
             };
             return icones[brinquedo] || 'fa-solid fa-gamepad';
-        }
+        };
         
-        function editarConfiguracao(brinquedo) {
+        const editarConfiguracao = (brinquedo) => {
             const config = configuracoes.brinquedosConfig[brinquedo];
             
             // Solicitar novo tempo
@@ -1093,18 +1128,36 @@
             
             // Recarregar interface
             carregarInterfaceConfig();
-        }
+        };
         
-        function salvarConfiguracoes() {
+        // NOVO: Função para editar a tolerância
+        const editarTolerancia = () => {
+            const novoTolerancia = prompt(`Configurar tolerância de não cobrança (minutos):`, configuracoes.toleranciaMinutos);
+            if (novoTolerancia === null) return;
+            
+            const tolerancia = parseInt(novoTolerancia);
+            if (isNaN(tolerancia) || tolerancia < 0) {
+                alert("Tolerância inválida! Por favor, digite um número válido (0 ou mais).");
+                return;
+            }
+            
+            // Atualizar configuração
+            configuracoes.toleranciaMinutos = tolerancia;
+            
+            // Recarregar interface
+            carregarInterfaceConfig();
+        };
+        
+        const salvarConfiguracoes = () => {
             salvarDados();
             alert('Configurações salvas com sucesso!');
             fecharModal('configM');
-        }
+        };
 
         // ============================================
         // FUNÇÕES DE PERSISTÊNCIA
         // ============================================
-        function salvarDados() {
+        const salvarDados = () => {
             const dados = {
                 atividadesAtivas: atividadesAtivas,
                 historico: historico,
@@ -1113,22 +1166,35 @@
             };
             
             try {
-                localStorage.setItem('polar_brinque_v7', JSON.stringify(dados));
+                localStorage.setItem('polar_brinque_v8', JSON.stringify(dados));
             } catch(e) {
                 console.error("Erro ao salvar dados:", e);
             }
-        }
+        };
         
-        function carregarDados() {
+        const carregarDados = () => {
             try {
-                const dadosSalvos = localStorage.getItem('polar_brinque_v7');
+                const dadosSalvos = localStorage.getItem('polar_brinque_v8');
                 if (!dadosSalvos) return;
                 
                 const dados = JSON.parse(dadosSalvos);
                 
                 if (dados.atividadesAtivas) atividadesAtivas = dados.atividadesAtivas;
                 if (dados.historico) historico = dados.historico;
-                if (dados.configuracoes) configuracoes = dados.configuracoes;
+                if (dados.configuracoes) {
+                    const configSalvas = dados.configuracoes;
+                    
+                    // Preservar configurações salvas
+                    configuracoes.precoPorMinuto = configSalvas.precoPorMinuto || 1.00;
+                    // ATUALIZADO: Preservar tolerância ou usar padrão 1
+                    configuracoes.toleranciaMinutos = configSalvas.toleranciaMinutos || 1;
+                    
+                    // Mesclar brinquedosConfig
+                    configuracoes.brinquedosConfig = {
+                        ...configuracoes.brinquedosConfig,
+                        ...configSalvas.brinquedosConfig
+                    };
+                }
                 
                 // Renderizar dados carregados
                 renderizarAtividadesAtivas();
@@ -1136,26 +1202,38 @@
             } catch(e) {
                 console.error("Erro ao carregar dados:", e);
             }
-        }
+        };
         
-        function limparDados() {
+        const limparDados = () => {
             if(atividadesAtivas.length > 0) {
                 alert("Existem atividades em andamento. Encerre-as primeiro.");
                 return;
             }
             
-            if(confirm("Tem certeza que deseja limpar TODOS os dados?\nEsta ação não pode ser desfeita.")) {
+            if(confirm("Tem certeza que deseja limpar TODOS os dados de atividades e histórico?\n\n⚠️ ATENÇÃO: As CONFIGURAÇÕES NÃO SERÃO APAGADAS.\nEsta ação não pode ser desfeita.")) {
+                // Salvar as configurações atuais antes de limpar
+                const configSalvas = { ...configuracoes };
+                
+                // Limpar localStorage
                 localStorage.clear();
+                
+                // Restaurar as configurações imediatamente
+                configuracoes = configSalvas;
+                salvarDados();
+                
+                // Limpar arrays locais
                 historico = [];
+                
+                // Atualizar interface
                 renderizarHistorico();
-                alert("Todos os dados foram removidos.");
+                alert("Dados de atividades e histórico removidos. Configurações mantidas.");
             }
-        }
+        };
 
         // ============================================
         // FUNÇÃO DE RELATÓRIO
         // ============================================
-        function gerarRelatorio() {
+        const gerarRelatorio = () => {
             if(historico.length === 0) {
                 alert("Não há dados para gerar relatório.");
                 return;
@@ -1211,7 +1289,7 @@
                 link.click();
                 document.body.removeChild(area);
             });
-        }
+        };
 
         // ============================================
         // INICIALIZAÇÃO DO SISTEMA
