@@ -582,8 +582,8 @@
                 'Triciclo': { tempo: 10, valor: 10.00 },
                 'Playground': { tempo: 15, valor: 10.00 }
             },
-            // ATUALIZADO: Adicionada configuração de tolerância
-            toleranciaMinutos: 1 // ATUALIZADO: De 2 para 1 minuto
+            // Configuração de tolerância preservada
+            toleranciaMinutos: 1
         };
         
         // Áudio do final do evento
@@ -716,7 +716,7 @@
             
             // Validação
             if (!nomeInput.checkValidity()) {
-                alert("Por favor, preencha o nome da criança!");
+                alert("Por favor, informe o nome da criança!");
                 return;
             }
             
@@ -900,7 +900,7 @@
             if(index === -1) return;
             
             const atividade = atividadesAtivas[index];
-            const novoNome = prompt("Editar nome:", atividade.n);
+            const novoNome = prompt("Editar nome da criança:", atividade.n);
             const novoToy = prompt("Editar brinquedo:", atividade.t);
             const novoTime = prompt("Editar tempo (minutos):", atividade.tm);
             
@@ -951,11 +951,9 @@
             const agora = new Date().getTime();
             const decorridoMin = Math.max(0, Math.floor((agora - atividade.st) / 1000 / 60));
             
-            // ATUALIZADO: Tolerância alterada de 2 para 1 minuto
-            // Calcular valor (não cobrar se menos de 1 minuto)
+            // Usar tolerância configurada
             let valor = 0;
-            if(decorridoMin > configuracoes.toleranciaMinutos) { // ATUALIZADO: Usando a configuração
-                // Usar o tempo decorrido para cálculo proporcional
+            if(decorridoMin > configuracoes.toleranciaMinutos) {
                 valor = decorridoMin * atividade.valorPorMinuto;
             }
             
@@ -1100,51 +1098,43 @@
         const editarConfiguracao = (brinquedo) => {
             const config = configuracoes.brinquedosConfig[brinquedo];
             
-            // Solicitar novo tempo
             const novoTempo = prompt(`Configurar tempo para "${brinquedo}" (minutos):`, config.tempo);
             if (novoTempo === null) return;
             
             const tempo = parseInt(novoTempo);
             if (isNaN(tempo) || tempo <= 0) {
-                alert("Tempo inválido! Por favor, digite um número maior que zero.");
+                alert("Tempo inválido! Digite um número maior que zero.");
                 return;
             }
             
-            // Solicitar novo valor
             const novoValorStr = prompt(`Configurar valor para "${brinquedo}" (R$):`, config.valor.toFixed(2));
             if (novoValorStr === null) return;
             
             const valor = parseFloat(novoValorStr.replace(',', '.'));
             if (isNaN(valor) || valor < 0) {
-                alert("Valor inválido! Por favor, digite um valor numérico válido.");
+                alert("Valor inválido! Digite um valor numérico válido.");
                 return;
             }
             
-            // Atualizar configuração
             configuracoes.brinquedosConfig[brinquedo] = {
                 tempo: tempo,
                 valor: valor
             };
             
-            // Recarregar interface
             carregarInterfaceConfig();
         };
         
-        // NOVO: Função para editar a tolerância
         const editarTolerancia = () => {
             const novoTolerancia = prompt(`Configurar tolerância de não cobrança (minutos):`, configuracoes.toleranciaMinutos);
             if (novoTolerancia === null) return;
             
             const tolerancia = parseInt(novoTolerancia);
             if (isNaN(tolerancia) || tolerancia < 0) {
-                alert("Tolerância inválida! Por favor, digite um número válido (0 ou mais).");
+                alert("Tolerância inválida! Digite um número válido (0 ou mais).");
                 return;
             }
             
-            // Atualizar configuração
             configuracoes.toleranciaMinutos = tolerancia;
-            
-            // Recarregar interface
             carregarInterfaceConfig();
         };
         
@@ -1186,7 +1176,6 @@
                     
                     // Preservar configurações salvas
                     configuracoes.precoPorMinuto = configSalvas.precoPorMinuto || 1.00;
-                    // ATUALIZADO: Preservar tolerância ou usar padrão 1
                     configuracoes.toleranciaMinutos = configSalvas.toleranciaMinutos || 1;
                     
                     // Mesclar brinquedosConfig
@@ -1196,7 +1185,6 @@
                     };
                 }
                 
-                // Renderizar dados carregados
                 renderizarAtividadesAtivas();
                 renderizarHistorico();
             } catch(e) {
@@ -1210,23 +1198,31 @@
                 return;
             }
             
-            if(confirm("Tem certeza que deseja limpar TODOS os dados de atividades e histórico?\n\n⚠️ ATENÇÃO: As CONFIGURAÇÕES NÃO SERÃO APAGADAS.\nEsta ação não pode ser desfeita.")) {
-                // Salvar as configurações atuais antes de limpar
+            if(confirm("Tem certeza que deseja limpar TODOS os dados de atividades e histórico?")) {
+                // Salvar as configurações atuais
                 const configSalvas = { ...configuracoes };
                 
-                // Limpar localStorage
-                localStorage.clear();
+                // Criar novo objeto apenas com configurações
+                const dadosParaSalvar = {
+                    atividadesAtivas: [],
+                    historico: [],
+                    configuracoes: configSalvas,
+                    dataSalvamento: new Date().toISOString()
+                };
                 
-                // Restaurar as configurações imediatamente
-                configuracoes = configSalvas;
-                salvarDados();
+                // Salvar no localStorage
+                try {
+                    localStorage.setItem('polar_brinque_v8', JSON.stringify(dadosParaSalvar));
+                } catch(e) {
+                    console.error("Erro ao salvar dados após limpeza:", e);
+                }
                 
                 // Limpar arrays locais
                 historico = [];
                 
                 // Atualizar interface
                 renderizarHistorico();
-                alert("Dados de atividades e histórico removidos. Configurações mantidas.");
+                alert("Dados de atividades e histórico removidos com sucesso!");
             }
         };
 
@@ -1295,10 +1291,8 @@
         // INICIALIZAÇÃO DO SISTEMA
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Carregar dados salvos
             carregarDados();
             
-            // Fechar modais ao clicar fora
             document.querySelectorAll('.modal').forEach(modal => {
                 modal.addEventListener('click', function(e) {
                     if(e.target === this) {
@@ -1307,7 +1301,6 @@
                 });
             });
             
-            // Focar no input quando abrir modal de nome
             document.getElementById('nameM').addEventListener('click', () => {
                 setTimeout(() => {
                     document.getElementById('inNome').focus();
