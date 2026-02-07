@@ -7,8 +7,6 @@ com foco em experiências interativas e Progressive Web Apps (PWA).
 
 - **POLAR_BRINQUE_PWA.html**
   - Aplicação PWA para gestão e visualização de serviços
-- **Gerador_de_Escalas M&O.html**
-  - Gerador automático de escalas de trabalho
 
 ## 🚀 Como usar
 
