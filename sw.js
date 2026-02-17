@@ -1,5 +1,4 @@
 const CACHE_NAME = 'polar-brinque-v1';
-const urlsToCache = [
   const urlsToCache = [
   '/APLICACOES-WEB/',
   '/APLICACOES-WEB/index.html',
