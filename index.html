@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Polar_Brinque</title>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/nxt529Q/favicon.png">
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Ícone para iOS (quando adicionar à tela de início) -->
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <!-- Favicon original -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Font Awesome (HTTPS) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2canvas (HTTPS) -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
+        /* (mesmo estilo do original – não houve alterações) */
         :root {
             --polar-yellow: #ffcc00;
             --polar-blue: #0099ff;
@@ -593,7 +601,7 @@
             toleranciaMinutos: 1
         };
         
-        // Áudio do final do evento
+        // Áudio do final do evento (HTTPS)
         const audioFinal = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
         audioFinal.preload = 'auto';
         
@@ -1313,6 +1321,13 @@
                     document.getElementById('inNome').focus();
                 }, 100);
             });
+
+            // Registra o Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registrado com sucesso:', reg.scope))
+                    .catch(err => console.log('Falha ao registrar Service Worker:', err));
+            }
         });
     </script>
 </body>
