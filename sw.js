@@ -1,10 +1,12 @@
 const CACHE_NAME = 'polar-brinque-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png',
+  const urlsToCache = [
+  '/APLICACOES-WEB/',
+  '/APLICACOES-WEB/index.html',
+  '/APLICACOES-WEB/manifest.json',
+  '/APLICACOES-WEB/icon-192.png',
+  '/APLICACOES-WEB/icon-512.png'
+];
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://html2canvas.hertzen.com/dist/html2canvas.min.js',
   'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'
