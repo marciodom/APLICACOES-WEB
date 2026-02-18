@@ -136,9 +136,15 @@
         .btn-cmd:active {
             transform: translateY(0);
         }
-        .btn-blue { 
+ 
+ .btn-orange {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+ 
+           .btn-blue { 
             background: linear-gradient(135deg, var(--polar-blue) 0%, #0077cc 100%);
         }
+        
         .btn-ready { 
             background: linear-gradient(135deg, var(--polar-green-strong) 0%, #1e7e34 100%) !important;
             transform: scale(1.02); 
@@ -458,6 +464,11 @@
             <i class="fas fa-trash"></i> Limpar
         </button>
 
+        <!-- Botão de instalação do PWA -->
+        <button id="btnInstalar" class="btn-cmd btn-orange" style="display:none; width:100%; margin-top:10px;">
+    <i class="fas fa-download"></i> Instalar App
+</button>
+
         <h2 class="section-header">Atividades em Andamento</h2>
         <div id="ativos-cont"></div>
 
@@ -566,6 +577,7 @@
             <button class="btn-cmd btn-red" style="width:100%; margin-top:10px" onclick="fecharModal('timeM')">
                 Fechar
             </button>
+            
         </div>
     </div>
 
@@ -581,6 +593,7 @@
         let iconeSelecionado = "";
         let tempoSelecionado = 0;
         let intervalosAudio = {};
+        let deferredPrompt; // Variável para armazenar o evento de instalação
         
         // Configurações padrão
         let configuracoes = {
@@ -1307,6 +1320,24 @@
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
             carregarDados();
+
+            // Event listener para o prompt de instalação
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                const btnInstalar = document.getElementById('btnInstalar');
+                if (btnInstalar) {
+                    btnInstalar.style.display = 'block';
+                    btnInstalar.addEventListener('click', async () => {
+                        if (!deferredPrompt) return;
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(`Usuário ${outcome === 'accepted' ? 'instalou' : 'cancelou'}`);
+                        deferredPrompt = null;
+                        btnInstalar.style.display = 'none';
+                    });
+                }
+            });
             
             document.querySelectorAll('.modal').forEach(modal => {
                 modal.addEventListener('click', function(e) {
